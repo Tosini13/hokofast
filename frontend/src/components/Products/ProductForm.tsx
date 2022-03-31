@@ -11,7 +11,7 @@ const ProductForm: React.FC<TProductFormProps> = () => {
   const [name, setName] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createProduct({ name });
+    createProduct("6245df58d3657c109b66e668", { name });
   };
   return (
     <form onSubmit={handleSubmit}>

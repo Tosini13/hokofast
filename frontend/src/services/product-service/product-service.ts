@@ -1,34 +1,47 @@
 import socketIOClient from "socket.io-client";
 import { useCallback, useEffect, useState } from "react";
 import { TProductFormData } from "../../components/Products/ProductForm";
-import { TProduct } from "../../types/products";
-import { mockProducts } from "./mockData";
 import axios from "axios";
 import { EEvents } from "../../types/backend/events";
+import { TItem } from "../../types/items";
 
 // ======================== URL ===========================
-const SERVER_URL = "http://127.0.0.1:3001"; //process.env.REACT_APP_SERVER_URL ?? "";
-const PRODUCTS_API_URL = "items";
+const SERVER_URL = "http://127.0.0.1:3000"; //process.env.REACT_APP_SERVER_URL ?? "";
+const ITEMS_API_URL = (listId: string, itemId?: string) =>
+  `/lists/${listId}/items${itemId ? "/" + itemId : ""}`;
 
 export const useProductService = () => {
-  const [products, setProducts] = useState<TProduct[]>(mockProducts);
+  const [products, setProducts] = useState<TItem[]>([]);
 
   useEffect(() => {
     const socket = socketIOClient(SERVER_URL);
-    socket.on(EEvents.getCreatedItem, (data) => {
-      setProducts((prev) => [
-        ...prev,
-        { name: data.name, id: prev.length.toString() },
-      ]);
+    socket.on(EEvents.createdItem, (data: TItem) => {
+      setProducts((prev) => [...prev, data]);
     });
   }, []);
 
-  const createProduct = useCallback(async (data: TProductFormData) => {
-    await axios.post(`${SERVER_URL}/api/${PRODUCTS_API_URL}`, data);
+  const createProduct = useCallback(
+    async (listId: string, data: TProductFormData) => {
+      await axios.post(`${SERVER_URL}/api/${ITEMS_API_URL(listId)}`, data);
+    },
+    []
+  );
+
+  const getProducts = useCallback(async (listId: string) => {
+    const res = await axios.get<TItem[]>(
+      `${SERVER_URL}/api/${ITEMS_API_URL(listId)}`
+    );
+    console.log("res", res);
+    setProducts(res.data);
   }, []);
+
+  useEffect(() => {
+    getProducts("6245df58d3657c109b66e668");
+  }, [getProducts]);
 
   return {
     products,
     createProduct,
+    getProducts,
   };
 };

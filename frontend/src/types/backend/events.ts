@@ -1,3 +1,8 @@
 export enum EEvents {
-  getCreatedItem = "GET_CREATED_ITEM",
+  createdItem = "CREATED_ITEM",
+  updatedItem = "UPDATED_ITEM",
+  deletedItem = "DELETED_ITEM",
+  createdList = "CREATED_LIST",
+  updatedList = "UPDATED_LIST",
+  deletedList = "DELETED_LIST",
 }
