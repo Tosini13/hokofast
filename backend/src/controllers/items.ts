@@ -24,7 +24,7 @@ export const convertItem = (doc: LeanDocument<IItem>): TItemRes => ({
 export const getItems = async (req: Request, res: Response) => {
   try {
     const items = await Item.find({ list: req.params.listId });
-    res.send({ data: items.map((item) => convertItem(item)) });
+    res.send(items.map((item) => convertItem(item)));
   } catch (e) {
     console.error(e);
   }
