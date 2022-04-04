@@ -4,11 +4,7 @@ import { TProductFormData } from "../../components/Products/ProductForm";
 import axios from "axios";
 import { EEvents } from "../../types/backend/events";
 import { TItem } from "../../types/items";
-
-// ======================== URL ===========================
-const SERVER_URL = "http://127.0.0.1:3000"; //process.env.REACT_APP_SERVER_URL ?? "";
-const ITEMS_API_URL = (listId: string, itemId?: string) =>
-  `/lists/${listId}/items${itemId ? "/" + itemId : ""}`;
+import { ITEMS_API_URL, SERVER_URL } from "../../models/api";
 
 export const useProductService = () => {
   const [products, setProducts] = useState<TItem[]>([]);
@@ -22,15 +18,13 @@ export const useProductService = () => {
 
   const createProduct = useCallback(
     async (listId: string, data: TProductFormData) => {
-      await axios.post(`${SERVER_URL}/api/${ITEMS_API_URL(listId)}`, data);
+      await axios.post(ITEMS_API_URL(listId), data);
     },
     []
   );
 
   const getProducts = useCallback(async (listId: string) => {
-    const res = await axios.get<TItem[]>(
-      `${SERVER_URL}/api/${ITEMS_API_URL(listId)}`
-    );
+    const res = await axios.get<TItem[]>(ITEMS_API_URL(listId));
     console.log("res", res);
     setProducts(res.data);
   }, []);
