@@ -1,18 +1,22 @@
+import { QueryClient, QueryClientProvider } from "react-query";
+import Lists from "./components/lists/Lists";
 import ProductForm from "./components/Products/ProductForm";
 import ProductsList from "./components/Products/ProductsList";
-import { useProductService } from "./services/product-service/product-service";
+import { useItemsService } from "./services/items/item-service";
 
 function App() {
-  const { products } = useProductService();
-
-  console.log("products", products);
+  const queryClient = new QueryClient();
+  const items = useItemsService("6245df58d3657c109b66e668");
 
   return (
-    <div>
-      <p>Hokofast</p>
-      <ProductsList products={products} />
-      <ProductForm />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <div>
+        <p>Hokofast</p>
+        <Lists />
+        <ProductsList products={items ?? []} />
+        <ProductForm />
+      </div>
+    </QueryClientProvider>
   );
 }
 
