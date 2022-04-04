@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import Lists from "./components/lists/Lists";
+import BottomNav from "./components/navigation/BottomNavigation";
 import ProductForm from "./components/Products/ProductForm";
 import ProductsList from "./components/Products/ProductsList";
 import { useItemsService } from "./services/items/item-service";
@@ -15,6 +16,7 @@ function App() {
         <Lists />
         <ProductsList products={items ?? []} />
         <ProductForm />
+        <BottomNav />
       </div>
     </QueryClientProvider>
   );
