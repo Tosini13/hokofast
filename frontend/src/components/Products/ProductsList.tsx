@@ -1,7 +1,7 @@
-import { TProduct } from "../../types/products";
+import { TItem } from "../../types/items";
 
 type TProductsListProps = {
-  products: TProduct[];
+  products: TItem[];
 };
 
 const ProductsList: React.FC<TProductsListProps> = ({ products }) => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProductService } from "../../services/product-service/product-service";
+import { createProduct } from "../../services/items/item-service";
 import { TProduct } from "../../types/products";
 
 export type TProductFormData = Omit<TProduct, "id">;
@@ -7,7 +7,6 @@ export type TProductFormData = Omit<TProduct, "id">;
 type TProductFormProps = {};
 
 const ProductForm: React.FC<TProductFormProps> = () => {
-  const { createProduct } = useProductService();
   const [name, setName] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
