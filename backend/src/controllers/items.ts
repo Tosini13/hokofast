@@ -70,9 +70,12 @@ export const updateItem = async (req: Request, res: Response) => {
 
 export const deleteItem = async (req: Request, res: Response) => {
   try {
-    const item = await Item.findByIdAndRemove({ _id: req.params.itemId });
+    const deletedItem = await Item.findByIdAndRemove({
+      _id: req.params.itemId,
+    });
+    const item = convertItem(deletedItem);
     io.emit(EEvents.deletedItem, item);
-    res.send(convertItem(item));
+    res.send(item);
   } catch (e) {
     console.error(e);
   }

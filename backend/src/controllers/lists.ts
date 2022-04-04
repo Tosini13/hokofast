@@ -53,9 +53,12 @@ export const updateList = async (req: Request, res: Response) => {
 
 export const deleteList = async (req: Request, res: Response) => {
   try {
-    const list = await List.findByIdAndRemove({ _id: req.params.listId });
+    const deletedList = await List.findByIdAndRemove({
+      _id: req.params.listId,
+    });
+    const list = convertList(deletedList);
     io.emit(EEvents.deletedList, list);
-    res.send(convertList(list));
+    res.send(list);
   } catch (e) {
     console.error(e);
   }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createProduct } from "../../services/items/item-service";
+import { createItem } from "../../services/items/item-service";
 import { TProduct } from "../../types/products";
 
 export type TProductFormData = Omit<TProduct, "id">;
@@ -10,7 +10,7 @@ const ProductForm: React.FC<TProductFormProps> = () => {
   const [name, setName] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createProduct("6245df58d3657c109b66e668", { name });
+    createItem("6245df58d3657c109b66e668", { name });
   };
   return (
     <form onSubmit={handleSubmit}>
