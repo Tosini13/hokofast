@@ -4,34 +4,64 @@ import {
   Box,
   styled,
 } from "@mui/material";
-import { useState } from "react";
 import GroupsIcon from "@mui/icons-material/Groups";
 import HomeIcon from "@mui/icons-material/Home";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import { EPath } from "../../routing/paths";
+
+const getNavValue = (location: string) => {
+  if (matchPath(location, EPath.colaboration)) {
+    return 0;
+  }
+  if (matchPath(location, EPath.home)) {
+    return 1;
+  }
+  if (matchPath(location, EPath.addList)) {
+    return 2;
+  }
+  return -1;
+};
+
+const useNavNavigate = (navigate: (path: string) => void) => {
+  return (value: number) => {
+    switch (value) {
+      case 0:
+        return navigate(EPath.colaboration);
+      case 2:
+        return navigate(EPath.addList);
+      default:
+        return navigate(EPath.home);
+    }
+  };
+};
 
 const BoxStyled = styled(Box)`
   position: absolute;
-  width: calc(100vw - 4px);
-  bottom: 2px;
-  left: 2px;
-  border-radius: 12px;
+  width: calc(100vw);
+  bottom: 0px;
 `;
 
 const BottomNavigationStyled = styled(BottomNavigation)`
   background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
+  border-radius: 12px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 `;
 type TBottomNavProps = {};
 
 const BottomNav: React.FC<TBottomNavProps> = () => {
-  const [value, setValue] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const navNavigate = useNavNavigate(navigate);
+
   return (
     <BoxStyled>
       <BottomNavigationStyled
         showLabels
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
+        value={getNavValue(location.pathname)}
+        onChange={(_event, newValue) => {
+          navNavigate(newValue);
         }}
       >
         <BottomNavigationAction label="Colaboration" icon={<GroupsIcon />} />

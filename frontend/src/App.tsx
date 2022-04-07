@@ -1,21 +1,23 @@
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Route, Routes } from "react-router-dom";
+import List from "./components/lists/List/List";
 import Lists from "./components/lists/Lists";
 import BottomNav from "./components/navigation/BottomNavigation";
-import ProductForm from "./components/Products/ProductForm";
-import ProductsList from "./components/Products/ProductsList";
-import { useItemsService } from "./services/items/item-service";
+import { EPath } from "./routing/paths";
 
 function App() {
   const queryClient = new QueryClient();
-  const items = useItemsService("6245df58d3657c109b66e668");
 
   return (
     <QueryClientProvider client={queryClient}>
       <div>
-        <p>Hokofast</p>
-        <Lists />
+        <Routes>
+          <Route path={EPath.home} element={<Lists />} />
+          <Route path={EPath.list} element={<List />} />
+        </Routes>
+        {/*
         <ProductsList products={items ?? []} />
-        <ProductForm />
+        <ProductForm /> */}
         <BottomNav />
       </div>
     </QueryClientProvider>
