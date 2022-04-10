@@ -7,6 +7,7 @@ import { Id } from "../../types/utils";
 
 import socketIOClient from "socket.io-client";
 import { EEvents } from "../../types/backend/events";
+import { mockItems } from "./mock";
 
 const getItems = (listId: Id) => () =>
   axios.get<TItem[]>(ITEMS_API_URL(listId)).then((data) => data.data);
@@ -48,7 +49,11 @@ export const useItemsService = (listId: Id) => {
     });
   }, [socket]);
 
-  return items;
+  /**
+   * @todo
+   * remove mock
+   */
+  return items?.length ? items : mockItems.filter((i) => i.list === listId);
 };
 
 export const createItem = async (
