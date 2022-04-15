@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import Hokofast from "../../resources/svg/background.svg";
+import Hokofast from "../../resources/svg/hoko-background.svg";
 
 const HeaderBackground = styled(Box)`
   width: 100%;

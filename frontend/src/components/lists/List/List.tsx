@@ -1,12 +1,5 @@
-import { Add } from "@mui/icons-material";
-import {
-  CircularProgress,
-  Dialog,
-  IconButton,
-  Stack,
-  styled,
-} from "@mui/material";
-import React, { useCallback, useState } from "react";
+import { CircularProgress, Stack } from "@mui/material";
+import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
 import {
   createItem,
@@ -14,13 +7,6 @@ import {
 } from "../../../services/items/item-service";
 import { Id } from "../../../types/utils";
 import Item from "../../items/Item";
-import ItemForm from "../../items/ItemForm";
-
-const DialogStyled = styled(Dialog)`
-  .MuiPaper-root {
-    padding: 10px;
-  }
-`;
 
 const withId = (Component: React.ComponentType<TListProps>) => {
   return () => {
@@ -37,7 +23,6 @@ type TListProps = {
 };
 
 const List: React.FC<TListProps> = ({ listId }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const items = useItemsService(listId);
 
   const handleSubmit = useCallback(
@@ -56,15 +41,7 @@ const List: React.FC<TListProps> = ({ listId }) => {
         {items?.map((item) => (
           <Item key={item.id} item={item} />
         ))}
-        <Stack direction={"row"} alignItems="center" justifyContent={"center"}>
-          <IconButton onClick={() => setIsOpen(!isOpen)}>
-            <Add />
-          </IconButton>
-        </Stack>
       </Stack>
-      <DialogStyled open={isOpen} onClose={() => setIsOpen(false)}>
-        <ItemForm handleSubmit={handleSubmit} />
-      </DialogStyled>
     </>
   );
 };

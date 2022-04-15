@@ -1,6 +1,7 @@
 import { Stack, styled } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Route, Routes } from "react-router-dom";
+import ItemsHeader from "./components/header/ItemsHeader";
 import MainHeader from "./components/header/MainHeader";
 import List from "./components/lists/List/List";
 import Lists from "./components/lists/Lists";
@@ -17,10 +18,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <StackContainer>
-        <MainHeader />
         <Routes>
-          <Route path={EPath.home} element={<Lists />} />
+          <Route path={EPath.list} element={<ItemsHeader />} />
+          <Route path={EPath.home} element={<MainHeader />} />
+        </Routes>
+        <Routes>
           <Route path={EPath.list} element={<List />} />
+          <Route path={EPath.home} element={<Lists />} />
         </Routes>
         {/*
         <ProductsList products={items ?? []} />

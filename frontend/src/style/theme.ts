@@ -25,8 +25,8 @@ export const theme = createTheme({
       contrastText: "#FFF",
     },
     secondary: {
-      main: "#F0DE4F",
-      contrastText: "#313D56",
+      main: "#313D56",
+      contrastText: "#FFF",
     },
     text: {
       primary: "#313D56",
