@@ -11,12 +11,14 @@ const MainHeader: React.FC<TMainHeaderProps> = () => {
       <Stack spacing={3}>
         <HeaderMenu />
         <Stack spacing={0}>
-          <Typography>Welcome back</Typography>
-          <Typography variant="h5" fontWeight={800}>
+          <Typography color="primary" fontWeight={600}>
+            Welcome back
+          </Typography>
+          <Typography variant="h5" fontWeight={800} color="primary">
             Chris4
           </Typography>
         </Stack>
-        <Typography align="center">
+        <Typography color="primary" align="center" fontWeight={600}>
           Are you ready for super fast shopping?
         </Typography>
       </Stack>

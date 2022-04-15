@@ -28,7 +28,7 @@ type THeaderLayoutProps = {};
 const HeaderLayout: React.FC<THeaderLayoutProps> = ({ children }) => {
   return (
     <HeaderBackground>
-      <div style={{ padding: "0px 20px", paddingTop: "10px" }}>{children}</div>
+      <div style={{ padding: "0px 20px", paddingTop: "20px" }}>{children}</div>
     </HeaderBackground>
   );
 };
