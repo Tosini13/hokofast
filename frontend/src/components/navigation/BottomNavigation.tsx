@@ -43,10 +43,10 @@ const BoxStyled = styled(Box)`
 `;
 
 const BottomNavigationStyled = styled(BottomNavigation)`
-  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
+  box-shadow: 0px 0px 6px 0px rgb(0 0 0 / 40%);
 `;
 type TBottomNavProps = {};
 

@@ -1,19 +1,8 @@
 import { Remove } from "@mui/icons-material";
-import {
-  Box,
-  IconButton,
-  Paper,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
-import { deleteItem } from "../../../services/items/item-service";
-import { TItem } from "../../../types/items";
-
-const PaperStyled = styled(Paper)`
-  border-radius: 15px;
-  padding: 10px;
-`;
+import { Box, IconButton, Stack, styled, Typography } from "@mui/material";
+import { deleteItem } from "../../services/items/item-service";
+import { TItem } from "../../types/items";
+import { PaperStyled } from "../lists/Lists";
 
 const BoxStyled = styled(Box)`
   border-radius: 5px;
@@ -21,13 +10,13 @@ const BoxStyled = styled(Box)`
   padding: 8px;
 `;
 
-type TItemListProps = {
+type TItemProps = {
   item: TItem;
 };
 
-const ItemList: React.FC<TItemListProps> = ({ item }) => {
+const Item: React.FC<TItemProps> = ({ item }) => {
   return (
-    <PaperStyled>
+    <PaperStyled variant="outlined">
       <Stack direction={"row"} alignItems="center" spacing={1}>
         <Typography style={{ flexGrow: 1 }}>{item.name}</Typography>
         <BoxStyled>
@@ -41,4 +30,4 @@ const ItemList: React.FC<TItemListProps> = ({ item }) => {
   );
 };
 
-export default ItemList;
+export default Item;
