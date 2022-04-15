@@ -1,19 +1,8 @@
 import { Remove } from "@mui/icons-material";
-import {
-  Box,
-  IconButton,
-  Paper,
-  Stack,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Stack, styled, Typography } from "@mui/material";
 import { deleteItem } from "../../services/items/item-service";
 import { TItem } from "../../types/items";
-
-const PaperStyled = styled(Paper)`
-  border-radius: 15px;
-  padding: 10px;
-`;
+import { PaperStyled } from "../lists/Lists";
 
 const BoxStyled = styled(Box)`
   border-radius: 5px;
@@ -27,7 +16,7 @@ type TItemProps = {
 
 const Item: React.FC<TItemProps> = ({ item }) => {
   return (
-    <PaperStyled>
+    <PaperStyled variant="outlined">
       <Stack direction={"row"} alignItems="center" spacing={1}>
         <Typography style={{ flexGrow: 1 }}>{item.name}</Typography>
         <BoxStyled>

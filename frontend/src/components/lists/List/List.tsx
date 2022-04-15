@@ -2,11 +2,9 @@ import { Add } from "@mui/icons-material";
 import {
   CircularProgress,
   Dialog,
-  DialogTitle,
   IconButton,
   Stack,
   styled,
-  Typography,
 } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -49,12 +47,12 @@ const List: React.FC<TListProps> = ({ listId }) => {
     [listId]
   );
 
-  console.log("isOpen", isOpen);
-
   return (
     <>
-      <Typography>List</Typography>
-      <Stack spacing={1} style={{ margin: "0px 20px" }}>
+      <Stack
+        spacing={1}
+        style={{ backgroundColor: "#F2F2F2", flexGrow: 1, padding: "5px 20px" }}
+      >
         {items?.map((item) => (
           <Item key={item.id} item={item} />
         ))}
