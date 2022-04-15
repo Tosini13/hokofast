@@ -58,6 +58,7 @@ const BottomNav: React.FC<TBottomNavProps> = () => {
   return (
     <BoxStyled>
       <BottomNavigationStyled
+        color="secondary"
         showLabels
         value={getNavValue(location.pathname)}
         onChange={(_event, newValue) => {
