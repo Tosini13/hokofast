@@ -1,5 +1,13 @@
 import express from "express";
 import {
+  checkToken,
+  isLoggedIn,
+  login,
+  register,
+  resetPassword,
+  setPassword,
+} from "./controllers/auth";
+import {
   createItem,
   deleteItem,
   getItems,
@@ -11,8 +19,18 @@ import {
   getLists,
   updateList,
 } from "./controllers/lists";
+import { verifyToken } from "./middleware/auth";
 
 const router = express.Router();
+
+// -----------------------------------------
+// AUTH
+router.post("/login", login);
+router.post("/register", register);
+router.post("/reset-password", resetPassword);
+router.post("/check-token", checkToken);
+router.post("/is-logged-in", verifyToken, isLoggedIn);
+router.post("/set-password", setPassword);
 
 // -----------------------------------------
 // ITEMS
