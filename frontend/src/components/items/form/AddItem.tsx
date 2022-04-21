@@ -24,7 +24,7 @@ const TextFieldStyled = styled(TextField)`
   }
 `;
 
-const ButtonStyled = styled(Button)`
+export const ButtonStyled = styled(Button)`
   min-width: 45px;
   padding: 6px 6px;
 `;

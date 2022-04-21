@@ -3,6 +3,8 @@ export enum EPath {
   list = "/list/:listId",
   addList = "/add-list",
   colaboration = "/colaboration",
+  signIn = "/sign-in",
+  signUp = "/sign-up",
 }
 
 export const toPath = {

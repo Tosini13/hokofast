@@ -4,9 +4,12 @@ import {
   TextFieldProps,
   Theme,
   useTheme,
+  Button,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { editList } from "../../../services/lists/lists-service";
+import { Id } from "../../../types/utils";
 
 const StackInputContainer = styled(Stack)<{ isactive: boolean }>`
   padding: 5px;
@@ -24,6 +27,22 @@ const StackInputContainer = styled(Stack)<{ isactive: boolean }>`
   `
       : `
   background-color: transparent;
+  `}
+`;
+
+const ButtonStyled = styled(Button)<{ isactive: boolean }>`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 15px;
+  transition: all 0.3s;
+  ${(props) =>
+    props.isactive
+      ? `
+      top: 80vh;
+  `
+      : `
+      top: calc(100vh + 40px);
   `}
 `;
 
@@ -50,6 +69,7 @@ const TextFieldStyled = styled(TextFieldMui)<{
     }
   `}
 `;
+
 type TTextFieldWithThemeProps = TextFieldProps & {
   isActive: boolean;
 };
@@ -62,21 +82,48 @@ const TextFieldWithTheme: React.FC<TTextFieldWithThemeProps> = ({
   return <TextFieldStyled {...props} isactive={isActive} theme={theme} />;
 };
 
-type TListNameProps = { name: string; isActive: boolean };
+type TListNameProps = { listId: Id; name: string; isActive: boolean };
 
-const ListName: React.FC<TListNameProps> = ({ name: initName, isActive }) => {
+const ListName: React.FC<TListNameProps> = ({
+  name: initName,
+  isActive,
+  listId,
+}) => {
   const [name, setName] = useState(initName);
+
+  const handleSubmit = useCallback(async () => {
+    await editList(listId, {
+      name,
+    });
+  }, [name, listId]);
+
   return (
-    <StackInputContainer isactive={isActive}>
-      <TextFieldWithTheme
-        placeholder={"List name"}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        variant="standard"
-        isActive={isActive}
-        disabled={!isActive}
-      />
-    </StackInputContainer>
+    <form
+      style={{ alignSelf: "center" }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
+      <StackInputContainer isactive={isActive}>
+        <TextFieldWithTheme
+          placeholder={"List name"}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          variant="standard"
+          isActive={isActive}
+          disabled={!isActive}
+        />
+      </StackInputContainer>
+      <ButtonStyled
+        color="secondary"
+        variant="contained"
+        type="submit"
+        isactive={isActive}
+      >
+        Save
+      </ButtonStyled>
+    </form>
   );
 };
 

@@ -15,7 +15,7 @@ const getItems = (listId: Id) => () =>
 export const useItemsService = (listId: Id) => {
   const [items, setItems] = useState<TItem[]>();
 
-  const socket = useMemo(() => socketIOClient(SERVER_URL), []);
+  // const socket = useMemo(() => socketIOClient(SERVER_URL), []);
 
   useEffect(() => {
     const queryClient = new QueryClient();
@@ -29,25 +29,25 @@ export const useItemsService = (listId: Id) => {
     });
   }, [listId]);
 
-  useEffect(() => {
-    socket.on(EEvents.createdItem, (data: TItem) => {
-      setItems((prev) => [...(prev ?? []), data]);
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on(EEvents.createdItem, (data: TItem) => {
+  //     setItems((prev) => [...(prev ?? []), data]);
+  //   });
+  // }, [socket]);
 
-  useEffect(() => {
-    socket.on(EEvents.updatedItem, (data: TItem) => {
-      setItems((prev) =>
-        prev?.map((item) => (item.id === data.id ? data : item))
-      );
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on(EEvents.updatedItem, (data: TItem) => {
+  //     setItems((prev) =>
+  //       prev?.map((item) => (item.id === data.id ? data : item))
+  //     );
+  //   });
+  // }, [socket]);
 
-  useEffect(() => {
-    socket.on(EEvents.deletedItem, (data: TItem) => {
-      setItems((prev) => prev?.filter((item) => item.id !== data.id));
-    });
-  }, [socket]);
+  // useEffect(() => {
+  //   socket.on(EEvents.deletedItem, (data: TItem) => {
+  //     setItems((prev) => prev?.filter((item) => item.id !== data.id));
+  //   });
+  // }, [socket]);
 
   /**
    * @todo

@@ -1,10 +1,7 @@
+import React from "react";
 import { CircularProgress, Stack } from "@mui/material";
-import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import {
-  createItem,
-  useItemsService,
-} from "../../../services/items/item-service";
+import { useItemsService } from "../../../services/items/item-service";
 import { Id } from "../../../types/utils";
 import Item from "../../items/Item";
 
@@ -24,14 +21,6 @@ type TListProps = {
 
 const List: React.FC<TListProps> = ({ listId }) => {
   const items = useItemsService(listId);
-
-  const handleSubmit = useCallback(
-    (name: string) => {
-      createItem(listId, { name });
-    },
-    [listId]
-  );
-
   return (
     <>
       <Stack
