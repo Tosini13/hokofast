@@ -1,7 +1,17 @@
-import { IconButton, Stack, styled, Avatar } from "@mui/material";
-import { useMemo } from "react";
+import {
+  IconButton,
+  Stack,
+  styled,
+  Avatar,
+  Dialog,
+  DialogActions,
+  Button,
+} from "@mui/material";
+import { useMemo, useState } from "react";
 import MenuIcon from "../../resources/svg/menu-icon.svg";
 import DefaultAvatar from "../../resources/svg/default_avatar.svg";
+import { useNavigate } from "react-router-dom";
+import { EPath } from "../../routing/paths";
 
 const MenuIconButton = styled(IconButton)`
   background-color: white;
@@ -21,6 +31,8 @@ const AvatarIconButton = styled(IconButton)`
 type THeaderMenuProps = {};
 
 const HeaderMenu: React.FC<THeaderMenuProps> = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const avatarUrl = useMemo(() => DefaultAvatar, []);
   return (
     <Stack
@@ -38,9 +50,15 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
           }}
         />
       </MenuIconButton>
-      <AvatarIconButton size="large">
+      <AvatarIconButton size="large" onClick={() => setIsOpen(!isOpen)}>
         <Avatar alt="user's avatar" src={avatarUrl} />
       </AvatarIconButton>
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogActions>
+          <Button onClick={() => navigate(EPath.signIn)}>Sign In</Button>
+          <Button onClick={() => navigate(EPath.signUp)}>Sign Up</Button>
+        </DialogActions>
+      </Dialog>
     </Stack>
   );
 };

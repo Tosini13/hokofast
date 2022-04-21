@@ -12,10 +12,9 @@ const StackContainer = styled(Stack)`
   transform: translateX(-50%);
   bottom: 30px;
   box-shadow: 0px 0px 7px 0px rgb(0 0 0 / 20%);
-}
 `;
 
-const TextFieldStyled = styled(TextField)`
+export const TextFieldStyled = styled(TextField)`
   .MuiInput-root::before {
     display: none;
   }

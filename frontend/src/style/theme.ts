@@ -2,18 +2,28 @@ import { createTheme } from "@mui/material";
 
 declare module "@mui/material/styles" {
   interface Theme {
-    value: {
-      normal: string;
-      high: string;
-      highest: string;
+    media: {
+      facebook: {
+        color: string;
+        contrastText: string;
+      };
+      google: {
+        color: string;
+        contrastText: string;
+      };
     };
   }
   // allow configuration using `createTheme`
   interface ThemeOptions {
-    value?: {
-      normal?: string;
-      high?: string;
-      highest?: string;
+    media?: {
+      facebook: {
+        color: string;
+        contrastText: string;
+      };
+      google: {
+        color: string;
+        contrastText: string;
+      };
     };
   }
 }
@@ -22,11 +32,11 @@ export const theme = createTheme({
   palette: {
     primary: {
       main: "#313D56",
-      contrastText: "#FFF",
+      contrastText: "#FAFAFA",
     },
     secondary: {
-      main: "#F0DE4F",
-      contrastText: "#313D56",
+      main: "#313D56",
+      contrastText: "#FAFAFA",
     },
     text: {
       primary: "#313D56",
@@ -51,9 +61,8 @@ export const theme = createTheme({
       fontFamily: ["Content", "Raleway", "sans-serif"].join(","),
     },
   },
-  value: {
-    normal: "green",
-    high: "yellow",
-    highest: "red",
+  media: {
+    facebook: { color: "#01579B", contrastText: "#FAFAFA" },
+    google: { color: "#FAFAFA", contrastText: "#313D56" },
   },
 });

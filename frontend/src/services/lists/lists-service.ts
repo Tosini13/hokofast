@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
-import { LISTS_API_URL } from "../../models/api";
+import { LISTS_API_URL, LIST_API_URL } from "../../models/api";
 import { TList } from "../../models/backend";
 import { mockLists } from "./mock";
 
@@ -24,4 +24,15 @@ export const useListsService = () => {
   }, []);
 
   return lists?.length ? lists : mockLists;
+};
+
+export const editList = async (
+  listId: string,
+  data: Omit<TList, "id" | "dateTime">
+) => {
+  await axios.put(LIST_API_URL(listId), data);
+};
+
+export const addList = async (data: Omit<TList, "id" | "dateTime">) => {
+  await axios.post(LISTS_API_URL, data);
 };

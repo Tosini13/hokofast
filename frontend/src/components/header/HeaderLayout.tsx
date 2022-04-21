@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import Hokofast from "../../resources/svg/background.svg";
+import Hokofast from "../../resources/svg/hoko-background.svg";
 
 const HeaderBackground = styled(Box)`
   width: 100%;
@@ -7,13 +7,12 @@ const HeaderBackground = styled(Box)`
   padding-bottom: 90px;
   background: url(${Hokofast});
   position: relative;
-  overflow: hidden;
   &::before {
     content: "";
     position: absolute;
     bottom: 0px;
     left: 50%;
-    width: 102%;
+    width: 100%;
     height: 50px;
     background-color: #f2f2f2;
     border-top-left-radius: 100%;
