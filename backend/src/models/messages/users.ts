@@ -1,0 +1,4 @@
+export enum EGetUser {
+  "USER_DOES_NOT_EXISTS" = "USER_DOES_NOT_EXISTS",
+  "UNAUTHORIZED" = "UNAUTHORIZED",
+}

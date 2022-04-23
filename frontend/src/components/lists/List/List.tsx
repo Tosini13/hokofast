@@ -25,7 +25,13 @@ const List: React.FC<TListProps> = ({ listId }) => {
     <>
       <Stack
         spacing={1}
-        style={{ backgroundColor: "#F2F2F2", flexGrow: 1, padding: "5px 20px" }}
+        style={{
+          backgroundColor: "#F2F2F2",
+          flexGrow: 1,
+          padding: "5px 20px",
+          overflowY: "auto",
+          maxHeight: "calc(100vh - 270px)",
+        }}
       >
         {items?.map((item) => (
           <Item key={item.id} item={item} />

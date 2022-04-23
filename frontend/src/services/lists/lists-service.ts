@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
-import { LISTS_API_URL, LIST_API_URL } from "../../models/api";
+import { LISTS_API_URL, LIST_API_URL } from "../../models/endpoints";
 import { TList } from "../../models/backend";
 import { mockLists } from "./mock";
 

@@ -1,11 +1,16 @@
 import { Stack, Typography } from "@mui/material";
+import { useGetCurrentUser } from "../../models/api/getCurrentUser";
 import HeaderLayout from "./HeaderLayout";
 import HeaderMenu from "./HeaderMenu";
 import Search from "./Search";
+import { useSearchForm } from "./searchForm/useSearchForm";
 
 type TMainHeaderProps = {};
 
 const MainHeader: React.FC<TMainHeaderProps> = () => {
+  const { response } = useGetCurrentUser();
+  const { handleSubmit, control } = useSearchForm();
+
   return (
     <HeaderLayout>
       <Stack spacing={3}>
@@ -15,14 +20,20 @@ const MainHeader: React.FC<TMainHeaderProps> = () => {
             Welcome back
           </Typography>
           <Typography variant="h5" fontWeight={800} color="primary">
-            Chris4
+            {response?.data.nickname}
           </Typography>
         </Stack>
         <Typography color="primary" align="center" fontWeight={600}>
           Are you ready for super fast shopping?
         </Typography>
       </Stack>
-      <Search placeholder={"Find list..."} />
+      <form onSubmit={handleSubmit}>
+        <Search
+          name={"search"}
+          control={control}
+          placeholder={"Find list..."}
+        />
+      </form>
     </HeaderLayout>
   );
 };

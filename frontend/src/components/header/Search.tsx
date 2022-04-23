@@ -1,6 +1,7 @@
 import { SearchSharp } from "@mui/icons-material";
-import { IconButton, Stack, styled, TextField } from "@mui/material";
-import { useState } from "react";
+import { IconButton, Stack, styled, TextFieldProps } from "@mui/material";
+import { useController, UseControllerProps } from "react-hook-form";
+import { TextFieldStyled } from "../controlled/TextField";
 
 const StackContainer = styled(Stack)`
   background-color: white;
@@ -14,32 +15,37 @@ const StackContainer = styled(Stack)`
   box-shadow: 0px 0px 7px 0px rgb(0 0 0 / 20%);
 `;
 
-export const TextFieldStyled = styled(TextField)`
-  .MuiInput-root::before {
-    display: none;
-  }
-  .MuiInput-root::after {
-    display: none;
-  }
-`;
+export type TSearchProps<FormValues> = Omit<TextFieldProps, "name"> &
+  UseControllerProps<FormValues>;
 
-type TSearchProps = {
-  placeholder: string;
-};
-
-const Search: React.FC<TSearchProps> = ({ placeholder }) => {
-  const [find, setFind] = useState("");
+const Search = <FormValues extends {}>({
+  children,
+  name,
+  defaultValue,
+  control,
+  rules,
+  ...props
+}: TSearchProps<FormValues>) => {
+  const {
+    field: { ref, ...inputProps },
+  } = useController<FormValues>({
+    name,
+    control,
+    rules,
+  });
   return (
     <StackContainer direction={"row"} alignItems="center" spacing={1}>
       <IconButton>
         <SearchSharp />
       </IconButton>
       <TextFieldStyled
-        placeholder={placeholder}
-        value={find}
-        onChange={(e) => setFind(e.target.value)}
+        inputRef={ref}
         variant="standard"
-      />
+        {...inputProps}
+        {...props}
+      >
+        {children}
+      </TextFieldStyled>
     </StackContainer>
   );
 };
