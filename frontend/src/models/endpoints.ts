@@ -11,3 +11,11 @@ export const ITEM_API_URL = (listId: Id, itemId: Id) =>
 
 export const LISTS_API_URL = `${API_URL}/lists`;
 export const LIST_API_URL = (listId: Id) => `${API_URL}/lists/${listId}`;
+
+/* ---------------- AUTH ------------------- */
+export const LOGIN_API_URL = `${API_URL}/login`;
+export const RESET_PASSWORD_API_URL = `${API_URL}/reset-password`;
+export const CHECK_TOKEN_API_URL = `${API_URL}/check-token`;
+export const IS_LOGGED_IN_API_URL = `${API_URL}/is-logged-in`;
+export const SET_PASSWORD_API_URL = `${API_URL}/set-password`;
+export const SIGN_UP_API_URL = `${API_URL}/register`;

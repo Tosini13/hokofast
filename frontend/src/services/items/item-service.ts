@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
-import { ITEMS_API_URL, ITEM_API_URL, SERVER_URL } from "../../models/api";
+import {
+  ITEMS_API_URL,
+  ITEM_API_URL,
+  SERVER_URL,
+} from "../../models/endpoints";
 import { TItem } from "../../types/items";
 import { Id } from "../../types/utils";
 

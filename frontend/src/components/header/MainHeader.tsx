@@ -2,10 +2,12 @@ import { Stack, Typography } from "@mui/material";
 import HeaderLayout from "./HeaderLayout";
 import HeaderMenu from "./HeaderMenu";
 import Search from "./Search";
+import { useSearchForm } from "./searchForm/useSearchForm";
 
 type TMainHeaderProps = {};
 
 const MainHeader: React.FC<TMainHeaderProps> = () => {
+  const { handleSubmit, control } = useSearchForm();
   return (
     <HeaderLayout>
       <Stack spacing={3}>
@@ -22,7 +24,13 @@ const MainHeader: React.FC<TMainHeaderProps> = () => {
           Are you ready for super fast shopping?
         </Typography>
       </Stack>
-      <Search placeholder={"Find list..."} />
+      <form onSubmit={handleSubmit}>
+        <Search
+          name={"search"}
+          control={control}
+          placeholder={"Find list..."}
+        />
+      </form>
     </HeaderLayout>
   );
 };
