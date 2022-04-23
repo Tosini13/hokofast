@@ -2,7 +2,7 @@ import axios from "axios";
 import { TUser } from "../../models/backend";
 import { SIGN_UP_API_URL } from "../../models/endpoints";
 
-export type TSignUpParams = Pick<TUser, "email" | "password">;
+export type TSignUpParams = Pick<TUser, "email" | "password" | "nickname">;
 export type TSignUpResult = Omit<TUser, "password">;
 
 export const signUp = async (data: TSignUpParams) =>

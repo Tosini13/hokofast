@@ -7,6 +7,7 @@ import {
 
 type TSignUpForm = {
   email: string;
+  nickname?: string;
   password: string;
   repeatPassword: string;
 };
@@ -32,6 +33,7 @@ export const useSignUpForm = ({ successCallback }: TUseSignUpFormProps) => {
     const signUpParams: TSignUpStoreParams = {
       email: data.email,
       password: data.password,
+      nickname: data.nickname,
       successCallBack: successCallback,
     };
 

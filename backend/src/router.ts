@@ -19,6 +19,7 @@ import {
   getLists,
   updateList,
 } from "./controllers/lists";
+import { getUser, updateUser } from "./controllers/users";
 import { verifyToken } from "./middleware/auth";
 
 const router = express.Router();
@@ -31,6 +32,11 @@ router.post("/reset-password", resetPassword);
 router.post("/check-token", checkToken);
 router.post("/is-logged-in", verifyToken, isLoggedIn);
 router.post("/set-password", setPassword);
+
+// -----------------------------------------
+// USERS
+router.get("/user", verifyToken, getUser);
+router.put("/user/:id", verifyToken, updateUser);
 
 // -----------------------------------------
 // ITEMS

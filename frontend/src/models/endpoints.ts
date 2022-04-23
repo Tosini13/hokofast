@@ -19,3 +19,7 @@ export const CHECK_TOKEN_API_URL = `${API_URL}/check-token`;
 export const IS_LOGGED_IN_API_URL = `${API_URL}/is-logged-in`;
 export const SET_PASSWORD_API_URL = `${API_URL}/set-password`;
 export const SIGN_UP_API_URL = `${API_URL}/register`;
+
+/* ---------------- USERS ------------------- */
+export const CURRENT_USER_API_URL = `${API_URL}/user`;
+export const USER_API_URL = (id: Id) => `${API_URL}/user/${id}`;

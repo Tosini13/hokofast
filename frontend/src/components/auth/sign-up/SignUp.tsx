@@ -32,6 +32,7 @@ const SignUp: React.FC<TSignUpProps> = () => {
         </Typography>
         <Stack spacing={2}>
           <TextField name={"email"} label="E-mail" control={control} />
+          <TextField name={"nickname"} label="Nickname" control={control} />
           <TextField
             name={"password"}
             label="Password"
