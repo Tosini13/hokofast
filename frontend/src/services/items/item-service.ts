@@ -11,7 +11,6 @@ import { Id } from "../../types/utils";
 
 import socketIOClient from "socket.io-client";
 import { EEvents } from "../../types/backend/events";
-import { mockItems } from "./mock";
 
 const getItems = (listId: Id) => () =>
   axios.get<TItem[]>(ITEMS_API_URL(listId)).then((data) => data.data);
@@ -19,7 +18,7 @@ const getItems = (listId: Id) => () =>
 export const useItemsService = (listId: Id) => {
   const [items, setItems] = useState<TItem[]>();
 
-  // const socket = useMemo(() => socketIOClient(SERVER_URL), []);
+  const socket = useMemo(() => socketIOClient(SERVER_URL), []);
 
   useEffect(() => {
     const queryClient = new QueryClient();
@@ -33,31 +32,27 @@ export const useItemsService = (listId: Id) => {
     });
   }, [listId]);
 
-  // useEffect(() => {
-  //   socket.on(EEvents.createdItem, (data: TItem) => {
-  //     setItems((prev) => [...(prev ?? []), data]);
-  //   });
-  // }, [socket]);
+  useEffect(() => {
+    socket.on(EEvents.createdItem, (data: TItem) => {
+      setItems((prev) => [...(prev ?? []), data]);
+    });
+  }, [socket]);
 
-  // useEffect(() => {
-  //   socket.on(EEvents.updatedItem, (data: TItem) => {
-  //     setItems((prev) =>
-  //       prev?.map((item) => (item.id === data.id ? data : item))
-  //     );
-  //   });
-  // }, [socket]);
+  useEffect(() => {
+    socket.on(EEvents.updatedItem, (data: TItem) => {
+      setItems((prev) =>
+        prev?.map((item) => (item.id === data.id ? data : item))
+      );
+    });
+  }, [socket]);
 
-  // useEffect(() => {
-  //   socket.on(EEvents.deletedItem, (data: TItem) => {
-  //     setItems((prev) => prev?.filter((item) => item.id !== data.id));
-  //   });
-  // }, [socket]);
+  useEffect(() => {
+    socket.on(EEvents.deletedItem, (data: TItem) => {
+      setItems((prev) => prev?.filter((item) => item.id !== data.id));
+    });
+  }, [socket]);
 
-  /**
-   * @todo
-   * remove mock
-   */
-  return items?.length ? items : mockItems.filter((i) => i.list === listId);
+  return items;
 };
 
 export const createItem = async (

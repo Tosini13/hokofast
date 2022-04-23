@@ -35,7 +35,7 @@ const SignIn: React.FC<TSignInProps> = () => {
             label="Password"
             control={control}
           />
-          <ButtonPrimary>Log In</ButtonPrimary>
+          <ButtonPrimary type="submit">Log In</ButtonPrimary>
         </Stack>
         <Typography color="primary" textAlign="center">
           or

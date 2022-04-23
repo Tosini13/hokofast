@@ -7,11 +7,12 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import MenuIcon from "../../resources/svg/menu-icon.svg";
 import DefaultAvatar from "../../resources/svg/default_avatar.svg";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../routing/paths";
+import { AuthStoreContext } from "../../stores/authStore";
 
 const MenuIconButton = styled(IconButton)`
   background-color: white;
@@ -31,9 +32,19 @@ const AvatarIconButton = styled(IconButton)`
 type THeaderMenuProps = {};
 
 const HeaderMenu: React.FC<THeaderMenuProps> = () => {
+  const authStore = useContext(AuthStoreContext);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const avatarUrl = useMemo(() => DefaultAvatar, []);
+
+  const logOut = React.useCallback(
+    () =>
+      authStore.logOut({
+        successCallBack: () => navigate(EPath.signIn),
+      }),
+    [navigate, authStore]
+  );
+
   return (
     <Stack
       direction={"row"}
@@ -55,8 +66,14 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
       </AvatarIconButton>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogActions>
-          <Button onClick={() => navigate(EPath.signIn)}>Sign In</Button>
-          <Button onClick={() => navigate(EPath.signUp)}>Sign Up</Button>
+          {authStore.isLoggedIn ? (
+            <Button onClick={logOut}>Log Out</Button>
+          ) : (
+            <>
+              <Button onClick={() => navigate(EPath.signIn)}>Sign In</Button>
+              <Button onClick={() => navigate(EPath.signUp)}>Sign Up</Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </Stack>
