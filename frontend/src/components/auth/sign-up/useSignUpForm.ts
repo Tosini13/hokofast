@@ -24,12 +24,17 @@ export const useSignUpForm = ({ successCallback }: TUseSignUpFormProps) => {
   const repeatPassword = watch("repeatPassword");
 
   React.useEffect(() => {
-    if (password !== repeatPassword) {
-      setError("repeatPassword", { message: "Wrong pass" });
+    if (password === repeatPassword) {
+      setError("repeatPassword", {});
     }
   }, [password, repeatPassword, setError]);
 
   const onSubmit = async (data: TSignUpForm) => {
+    if (password !== repeatPassword) {
+      setError("repeatPassword", { message: "Wrong pass" });
+      return;
+    }
+
     const signUpParams: TSignUpStoreParams = {
       email: data.email,
       password: data.password,

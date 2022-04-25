@@ -42,7 +42,7 @@ const SignUp: React.FC<TSignUpProps> = () => {
           <TextField
             name={"repeatPassword"}
             label="Repeat Password"
-            type="repeatPassword"
+            type="password"
             control={control}
           />
           <ButtonPrimary type="submit">Sign Up</ButtonPrimary>

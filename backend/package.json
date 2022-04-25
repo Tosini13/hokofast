@@ -12,6 +12,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
+  "devDependencies": {
+    "ts-node": "^10.7.0"
+  },
   "dependencies": {}
 }

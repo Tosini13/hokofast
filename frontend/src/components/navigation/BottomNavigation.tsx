@@ -65,7 +65,11 @@ const BottomNav: React.FC<TBottomNavProps> = () => {
           navNavigate(newValue);
         }}
       >
-        <BottomNavigationAction label="Colaboration" icon={<GroupsIcon />} />
+        <BottomNavigationAction
+          disabled
+          label="Colaboration"
+          icon={<GroupsIcon />}
+        />
         <BottomNavigationAction label="Home" icon={<HomeIcon />} />
         <BottomNavigationAction
           label="Add List"
