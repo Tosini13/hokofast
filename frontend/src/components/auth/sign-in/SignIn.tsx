@@ -8,11 +8,19 @@ import LayoutAuth, { LogoAuth } from "../Layout";
 import { Link } from "react-router-dom";
 import { useSignInForm } from "./useSignInForm";
 import TextField from "../../controlled/TextField";
+import { Login } from "@mui/icons-material";
+import { LoadingIcon } from "../../utils/Loading";
+import { useState } from "react";
 
 type TSignInProps = {};
 
 const SignIn: React.FC<TSignInProps> = () => {
-  const { handleSubmit, control } = useSignInForm();
+  const [error, setError] = useState("");
+  const { handleSubmit, control, isProcessing } = useSignInForm({
+    failureCallBack: () => setError("There was a problem"),
+    success: () => setError(""),
+  });
+
   return (
     <form onSubmit={handleSubmit}>
       <LayoutAuth>
@@ -35,7 +43,20 @@ const SignIn: React.FC<TSignInProps> = () => {
             label="Password"
             control={control}
           />
-          <ButtonPrimary type="submit">Log In</ButtonPrimary>
+          <ButtonPrimary
+            type="submit"
+            disabled={isProcessing}
+            startIcon={isProcessing ? <LoadingIcon /> : <Login />}
+          >
+            Log In
+          </ButtonPrimary>
+          <Typography
+            style={{ height: "24px" }}
+            color="red"
+            textAlign={"center"}
+          >
+            {error}
+          </Typography>
         </Stack>
         <Typography color="primary" textAlign="center">
           or

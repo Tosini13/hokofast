@@ -28,3 +28,7 @@ export enum EIsLoggedIn {
   "LOGGED_IN" = "LOGGED_IN",
   "LOGGED_OUT" = "LOGGED_OUT",
 }
+
+export enum ELogIn {
+  "INVALID_CREDENTIALS" = "INVALID_CREDENTIALS",
+}

@@ -43,12 +43,15 @@ class Auth {
   }
 
   async logIn({ email, password, failureCallBack }: TLogInStoreParams) {
-    const res = await logIn({ email, password });
-    if (res.data.token) {
-      this.setAxiosHeaders(res.data.token);
-      localStorage.setItem("token", res.data.token);
-      this.isLoggedIn = true;
-    } else {
+    try {
+      const res = await logIn({ email, password });
+      if (res.data.token) {
+        this.setAxiosHeaders(res.data.token);
+        localStorage.setItem("token", res.data.token);
+        this.isLoggedIn = true;
+      }
+    } catch (e) {
+      console.error("e", e);
       if (failureCallBack) failureCallBack();
       this.isLoggedIn = false;
     }
@@ -59,13 +62,16 @@ class Auth {
     successCallBack,
     ...data
   }: TSignUpStoreParams) {
-    const res = await signUp(data);
-    if (res.data.token) {
-      this.setAxiosHeaders(res.data.token);
-      localStorage.setItem("token", res.data.token);
-      this.isLoggedIn = true;
-      if (successCallBack) successCallBack();
-    } else {
+    try {
+      const res = await signUp(data);
+      if (res.data.token) {
+        this.setAxiosHeaders(res.data.token);
+        localStorage.setItem("token", res.data.token);
+        this.isLoggedIn = true;
+        if (successCallBack) successCallBack();
+      }
+    } catch (e) {
+      console.error("e", e);
       if (failureCallBack) failureCallBack();
       this.isLoggedIn = false;
     }
