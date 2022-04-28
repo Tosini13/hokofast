@@ -8,11 +8,13 @@ import nodemailer from "nodemailer";
 import {
   ECheckTokenMessage,
   EIsLoggedIn,
+  ELogIn,
   EResetPasswordMessage,
   ESetNewPasswordMessage,
 } from "../models/messages/auth";
 import { convertUser } from "./users";
 import { IVerifyTokenRequest } from "../middleware/auth";
+import { setError } from "../models/errors";
 
 type TRegisterRes = Omit<TUser, "password">;
 type TLoginRes = Omit<TUser, "password">;
@@ -65,9 +67,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!(email && password)) {
-      return res
-        .status(400)
-        .send({ message: "Email and password are required" });
+      return res.status(400).send(setError("Email and password are required"));
     }
 
     const user = await User.findOne({ email });
@@ -77,7 +77,7 @@ export const login = async (req: Request, res: Response) => {
         { user_id: user._id, email },
         process.env.TOKEN_KEY as string,
         {
-          expiresIn: "2h",
+          expiresIn: "10000h",
         }
       );
 
@@ -88,11 +88,11 @@ export const login = async (req: Request, res: Response) => {
       };
       res.status(200).json(response);
     } else {
-      res.status(400).send({ message: "Invalid credentials" });
+      res.status(400).send(setError(ELogIn.INVALID_CREDENTIALS));
     }
   } catch (e) {
     console.error(e);
-    res.status(500).send({ message: "Server has an internal error", error: e });
+    res.status(500).send(setError("Server has an internal error"));
   }
 };
 
@@ -103,7 +103,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     if (!email) {
       return res
         .status(400)
-        .send({ message: EResetPasswordMessage.EMAIL_IS_REQUIRED });
+        .send(setError(EResetPasswordMessage.EMAIL_IS_REQUIRED));
     }
 
     const user = await User.findOne({ email });
@@ -148,7 +148,7 @@ export const resetPassword = async (req: Request, res: Response) => {
           console.error(error);
           res
             .status(500)
-            .send({ message: EResetPasswordMessage.EMAIL_SENT_ERROR, error });
+            .send(setError(EResetPasswordMessage.EMAIL_SENT_ERROR));
         } else {
           res.status(200).send({
             message: EResetPasswordMessage.EMAIL_SENT,
@@ -159,9 +159,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
   } catch (e) {
     console.error(e);
-    res
-      .status(500)
-      .send({ message: EResetPasswordMessage.INTERNAL_ERROR, error: e });
+    res.status(500).send(setError(EResetPasswordMessage.INTERNAL_ERROR));
   }
 };
 
@@ -188,7 +186,7 @@ export const checkToken = async (req: Request, res: Response) => {
     res.status(200).send({ message: ECheckTokenMessage.TOKEN_VALID });
   } catch (e) {
     console.error(e);
-    res.status(500).send({ message: "Server has an internal error", error: e });
+    res.status(500).send(setError("Server has an internal error"));
   }
 };
 
@@ -199,12 +197,12 @@ export const setPassword = async (req: Request, res: Response) => {
     if (!token) {
       return res
         .status(400)
-        .send({ message: ESetNewPasswordMessage.TOKEN_IS_REQUIRED });
+        .send(setError(ESetNewPasswordMessage.TOKEN_IS_REQUIRED));
     }
     if (!password) {
       return res
         .status(400)
-        .send({ message: ESetNewPasswordMessage.PASSWORD_IS_REQUIRED });
+        .send(setError(ESetNewPasswordMessage.PASSWORD_IS_REQUIRED));
     }
 
     const tokenData = await Token.findOne({ token });
@@ -212,7 +210,7 @@ export const setPassword = async (req: Request, res: Response) => {
     if (!tokenData) {
       return res
         .status(400)
-        .send({ message: ESetNewPasswordMessage.TOKEN_INVALID });
+        .send(setError(ESetNewPasswordMessage.TOKEN_INVALID));
     }
 
     if (
@@ -222,7 +220,7 @@ export const setPassword = async (req: Request, res: Response) => {
       await Token.deleteOne({ token });
       return res
         .status(400)
-        .send({ message: ESetNewPasswordMessage.TOKEN_EXPIRED });
+        .send(setError(ESetNewPasswordMessage.TOKEN_EXPIRED));
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -235,7 +233,7 @@ export const setPassword = async (req: Request, res: Response) => {
     if (!user) {
       return res
         .status(400)
-        .send({ message: ESetNewPasswordMessage.USER_DOES_NOT_EXISTS });
+        .send(setError(ESetNewPasswordMessage.USER_DOES_NOT_EXISTS));
     }
     await Token.deleteOne({ token });
     res.status(200).send({ message: ESetNewPasswordMessage.NEW_PASSWORD_SET });
