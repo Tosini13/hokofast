@@ -6,6 +6,8 @@ import {
   TextFieldProps,
   Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useState } from "react";
 
 export const TextFieldStyled = styled(TextFieldMui)`
   .MuiInput-root::before {
@@ -23,8 +25,16 @@ const TextFieldPrimaryStyled = styled(TextFieldStyled)`
   padding: 2px 8px;
 `;
 
+const VisibilityIconStyled = styled(VisibilityIcon)`
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+`;
+
 export type TTextFieldProps<FormValues> = Omit<TextFieldProps, "name"> &
-  UseControllerProps<FormValues>;
+  UseControllerProps<FormValues> & {
+    visible?: boolean;
+  };
 
 export const TextField = <FormValues extends {}>({
   children,
@@ -33,8 +43,10 @@ export const TextField = <FormValues extends {}>({
   control,
   rules,
   label,
+  type,
   ...props
 }: TTextFieldProps<FormValues>) => {
+  const [visible, setVisible] = useState(false);
   const {
     field: { ref, ...inputProps },
   } = useController<FormValues>({
@@ -43,18 +55,22 @@ export const TextField = <FormValues extends {}>({
     rules,
   });
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} style={{ position: "relative" }}>
       <Typography color={"primary"} fontWeight={600}>
         {label}
       </Typography>
       <TextFieldPrimaryStyled
         inputRef={ref}
         variant="standard"
+        type={visible ? "text" : type}
         {...inputProps}
         {...props}
       >
         {children}
       </TextFieldPrimaryStyled>
+      {type === "password" ? (
+        <VisibilityIconStyled onClick={() => setVisible(!visible)} />
+      ) : null}
     </Stack>
   );
 };
