@@ -1,4 +1,4 @@
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid, styled } from "@mui/material";
 
 type TLoadingProps = {};
 
@@ -18,3 +18,8 @@ const Loading: React.FC<TLoadingProps> = () => {
 };
 
 export default Loading;
+
+export const LoadingIcon = styled(CircularProgress)`
+  width: 24px !important;
+  height: 24px !important;
+`;
