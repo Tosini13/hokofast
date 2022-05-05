@@ -11,13 +11,18 @@ type TSignUpForm = {
 
 type TUseSignInFormParams = {
   success?: () => void;
-  failureCallBack?: () => void;
+  failureCallBack?: (e?: string) => void;
 };
 
 export const useSignInForm = ({ failureCallBack }: TUseSignInFormParams) => {
   const { isProcessing, execute } = useAsync();
   const authStore = useContext(AuthStoreContext);
-  const { handleSubmit, control } = useForm<TSignUpForm>();
+  const { handleSubmit, control } = useForm<TSignUpForm>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const onSubmit = async (data: TSignUpForm) => {
     const logInParams: TLogInParams = {
