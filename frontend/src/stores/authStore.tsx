@@ -8,7 +8,7 @@ import { EIsLoggedIn } from "../models/backend";
 
 type TAuthFunc = {
   successCallBack?: () => void;
-  failureCallBack?: () => void;
+  failureCallBack?: (e?: string) => void;
 };
 
 export type TLogInStoreParams = TLogInParams & TAuthFunc;
@@ -45,6 +45,7 @@ class Auth {
   async logIn({ email, password, failureCallBack }: TLogInStoreParams) {
     try {
       const res = await signIn({ email, password });
+      // if (failureCallBack) failureCallBack(`TOKEN: ${JSON.stringify(res)}`);
       if (res.data.token) {
         this.setAxiosHeaders(res.data.token);
         localStorage.setItem("token", res.data.token);
@@ -52,7 +53,7 @@ class Auth {
       }
     } catch (e) {
       console.error("e", e);
-      if (failureCallBack) failureCallBack();
+      if (failureCallBack) failureCallBack(JSON.stringify(e));
       this.isLoggedIn = false;
     }
   }

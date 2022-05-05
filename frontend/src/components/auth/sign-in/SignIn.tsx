@@ -17,7 +17,7 @@ type TSignInProps = {};
 const SignIn: React.FC<TSignInProps> = () => {
   const [error, setError] = useState("");
   const { handleSubmit, control, isProcessing } = useSignInForm({
-    failureCallBack: () => setError("There was a problem"),
+    failureCallBack: (e?: string) => setError(`There was a problem ${e}`),
     success: () => setError(""),
   });
 
