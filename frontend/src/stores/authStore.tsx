@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
-import { logIn, TLogInParams } from "../models/api/login";
+import { logIn as signIn, TLogInParams } from "../models/api/login";
 import { signUp, TSignUpParams } from "../models/api/signup";
 import { isLoggedIn } from "../models/api/isLoggedIn";
 import { EIsLoggedIn } from "../models/backend";
@@ -44,7 +44,7 @@ class Auth {
 
   async logIn({ email, password, failureCallBack }: TLogInStoreParams) {
     try {
-      const res = await logIn({ email, password });
+      const res = await signIn({ email, password });
       if (res.data.token) {
         this.setAxiosHeaders(res.data.token);
         localStorage.setItem("token", res.data.token);

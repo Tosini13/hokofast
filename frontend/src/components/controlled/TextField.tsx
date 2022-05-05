@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 
 export const TextFieldStyled = styled(TextFieldMui)`
@@ -26,6 +27,12 @@ const TextFieldPrimaryStyled = styled(TextFieldStyled)`
 `;
 
 const VisibilityIconStyled = styled(VisibilityIcon)`
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+`;
+
+const VisibilityOffIconStyled = styled(VisibilityOffIcon)`
   position: absolute;
   right: 10px;
   bottom: 5px;
@@ -69,7 +76,11 @@ export const TextField = <FormValues extends {}>({
         {children}
       </TextFieldPrimaryStyled>
       {type === "password" ? (
-        <VisibilityIconStyled onClick={() => setVisible(!visible)} />
+        visible ? (
+          <VisibilityOffIconStyled onClick={() => setVisible(false)} />
+        ) : (
+          <VisibilityIconStyled onClick={() => setVisible(true)} />
+        )
       ) : null}
     </Stack>
   );
