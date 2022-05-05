@@ -15,7 +15,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "frontend:version": "cd frontend && npm run version:patch",
-    "heroku-postbuild": "npm run frontend:version"
+    "heroku-postbuild": "npm run frontend:version",
+    "publish:heroku": "git push heroku master"
   },
   "keywords": [],
   "author": "",
