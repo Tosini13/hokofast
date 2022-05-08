@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
 import { LISTS_API_URL, LIST_API_URL } from "../../models/endpoints";
 import { TList } from "../../models/backend";
-import { mockLists } from "./mock";
 
 const getLists = () =>
   axios.get<TList[]>(LISTS_API_URL).then((data) => data.data);
@@ -23,7 +22,7 @@ export const useListsService = () => {
     });
   }, []);
 
-  return lists?.length ? lists : mockLists;
+  return lists;
 };
 
 export const editList = async (

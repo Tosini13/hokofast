@@ -14,7 +14,7 @@ const withData = (Component: React.ComponentType<TItemsHeaderProps>) => {
     const { listId } = useParams();
     const lists = useListsService();
     const list = useMemo(
-      () => lists.find((l) => l.id === listId),
+      () => lists?.find((l) => l.id === listId),
       [listId, lists]
     );
     if (!listId || !list) {

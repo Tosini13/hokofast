@@ -14,6 +14,7 @@ connectMongoose();
 app.use((_req: Request, res: Response, next: NextFunction) => {
   res.header({
     "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": "true",
     "Cache-Control": "no-cache",
     "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE",
     "Access-Control-Allow-Headers":
