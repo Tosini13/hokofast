@@ -4,12 +4,14 @@ import { createServer } from "http";
 import router from "./router";
 import path from "path";
 import { connectMongoose } from "./config/mongo";
+import cors from "cors";
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 connectMongoose();
+app.use(cors());
 
 app.use((_req: Request, res: Response, next: NextFunction) => {
   res.header({
