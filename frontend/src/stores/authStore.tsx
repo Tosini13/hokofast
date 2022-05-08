@@ -5,6 +5,7 @@ import { logIn as signIn, TLogInParams } from "../models/api/login";
 import { signUp, TSignUpParams } from "../models/api/signup";
 import { isLoggedIn } from "../models/api/isLoggedIn";
 import { EIsLoggedIn } from "../models/backend";
+import { LOGIN_API_URL } from "../models/endpoints";
 
 type TAuthFunc = {
   successCallBack?: () => void;
@@ -45,7 +46,6 @@ class Auth {
   async logIn({ email, password, failureCallBack }: TLogInStoreParams) {
     try {
       const res = await signIn({ email, password });
-      // if (failureCallBack) failureCallBack(`TOKEN: ${JSON.stringify(res)}`);
       if (res.data.token) {
         this.setAxiosHeaders(res.data.token);
         localStorage.setItem("token", res.data.token);
@@ -53,7 +53,8 @@ class Auth {
       }
     } catch (e) {
       console.error("e", e);
-      if (failureCallBack) failureCallBack(JSON.stringify(e));
+      if (failureCallBack)
+        failureCallBack(`URL: ${LOGIN_API_URL} ZLE: ${JSON.stringify(e)}`);
       this.isLoggedIn = false;
     }
   }
