@@ -33,9 +33,8 @@ export const editList = async (
   await axios.put(LIST_API_URL(listId), data);
 };
 
-export const addList = async (data: Omit<TList, "id" | "dateTime">) => {
-  await axios.post(LISTS_API_URL, data);
-};
+export const addList = async (data: Omit<TList, "id" | "dateTime">) =>
+  await axios.post<TList>(LISTS_API_URL, data);
 
 export const deleteList = async (listId: Id) =>
   await axios.delete(LIST_API_URL(listId));
