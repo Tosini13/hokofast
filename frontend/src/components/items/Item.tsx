@@ -21,7 +21,7 @@ const Item: React.FC<TItemProps> = ({ item }) => {
         <Typography style={{ flexGrow: 1 }}>{item.name}</Typography>
         {item.qty && (
           <BoxStyled>
-            <Typography>2kg</Typography>
+            <Typography>{item.qty}</Typography>
           </BoxStyled>
         )}
         <IconButton onClick={() => deleteItem(item.list, item.id)}>
