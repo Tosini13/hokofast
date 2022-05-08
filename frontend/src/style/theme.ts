@@ -28,11 +28,12 @@ declare module "@mui/material/styles" {
   }
 }
 
+// #F0DE4F - yellow
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#313D56",
-      contrastText: "#FAFAFA",
+      main: "#313D56", //blue
+      contrastText: "#FAFAFA", //white
     },
     secondary: {
       main: "#313D56",
@@ -40,7 +41,7 @@ export const theme = createTheme({
     },
     text: {
       primary: "#313D56",
-      secondary: "#939393",
+      secondary: "#939393", // gray
     },
     success: {
       main: "#2D6B5F",

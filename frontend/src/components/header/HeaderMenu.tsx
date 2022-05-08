@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 import React, { useContext, useMemo, useState } from "react";
 import MenuIcon from "../../resources/svg/menu-icon.svg";
@@ -45,6 +46,8 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
     [navigate, authStore]
   );
 
+  const version = process.env.REACT_APP_VERSION;
+
   return (
     <Stack
       direction={"row"}
@@ -61,6 +64,13 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
           }}
         />
       </MenuIconButton>
+      <Typography
+        variant="caption"
+        textAlign="center"
+        style={{ margin: "0px" }}
+      >
+        v{version}
+      </Typography>
       <AvatarIconButton size="large" onClick={() => setIsOpen(!isOpen)}>
         <Avatar alt="user's avatar" src={avatarUrl} />
       </AvatarIconButton>
