@@ -19,9 +19,11 @@ const Item: React.FC<TItemProps> = ({ item }) => {
     <PaperStyled variant="outlined">
       <Stack direction={"row"} alignItems="center" spacing={1}>
         <Typography style={{ flexGrow: 1 }}>{item.name}</Typography>
-        <BoxStyled>
-          <Typography>2kg</Typography>
-        </BoxStyled>
+        {item.qty && (
+          <BoxStyled>
+            <Typography>2kg</Typography>
+          </BoxStyled>
+        )}
         <IconButton onClick={() => deleteItem(item.list, item.id)}>
           <Remove />
         </IconButton>
