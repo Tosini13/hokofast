@@ -37,7 +37,7 @@ const useNavNavigate = (navigate: (path: string) => void) => {
 };
 
 const BoxStyled = styled(Box)`
-  position: absolute;
+  position: fixed;
   width: calc(100vw);
   bottom: 0px;
 `;

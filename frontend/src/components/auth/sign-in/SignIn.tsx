@@ -21,21 +21,12 @@ const SignIn: React.FC<TSignInProps> = () => {
     success: () => setError(""),
   });
 
-  const version = process.env.REACT_APP_VERSION;
-
   return (
     <form onSubmit={handleSubmit}>
       <LayoutAuth>
         <Link to={EPath.home}>
           <LogoAuth />
         </Link>
-        <Typography
-          variant="caption"
-          textAlign="center"
-          style={{ margin: "0px" }}
-        >
-          v{version}
-        </Typography>
         <Typography
           textAlign={"center"}
           variant="h6"

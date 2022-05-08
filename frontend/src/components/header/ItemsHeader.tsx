@@ -1,11 +1,17 @@
-import { Add } from "@mui/icons-material";
-import { IconButton, Stack, styled } from "@mui/material";
-import { useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Add, Delete } from "@mui/icons-material";
+import { IconButton, Stack, styled, Typography } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { TList } from "../../models/backend";
-import { useListsService } from "../../services/lists/lists-service";
+import { EPath } from "../../routing/paths";
+import {
+  deleteList,
+  useListsService,
+} from "../../services/lists/lists-service";
+import useAsync from "../../utils/useAsync";
 import AddItem from "../items/form/AddItem";
 import ListName from "../items/form/ListName";
+import { LoadingIcon } from "../utils/Loading";
 import HeaderLayout from "./HeaderLayout";
 import HeaderMenu from "./HeaderMenu";
 
@@ -28,7 +34,7 @@ const withData = (Component: React.ComponentType<TItemsHeaderProps>) => {
   };
 };
 
-const IconButtonStyled = styled(IconButton)<{ isopen: boolean }>`
+const IconButtonStyled = styled(IconButton)<{ isopen?: boolean }>`
   position: absolute;
   bottom: 8px;
   left: 50%;
@@ -44,7 +50,23 @@ type TItemsHeaderProps = {
 };
 
 const ItemsHeader: React.FC<TItemsHeaderProps> = ({ list }) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { id } = list;
+  const { isProcessing, error, execute } = useAsync();
+
+  const handleDelete = React.useCallback(async () => {
+    if (isProcessing) {
+      return;
+    }
+    try {
+      await execute(deleteList(id));
+      navigate(EPath.home);
+    } catch (e) {
+      console.error("error:", e);
+    }
+  }, [id, navigate, execute, isProcessing]);
+
   return (
     <HeaderLayout>
       <Stack spacing={3}>
@@ -55,6 +77,17 @@ const ItemsHeader: React.FC<TItemsHeaderProps> = ({ list }) => {
       <IconButtonStyled onClick={() => setIsOpen(!isOpen)} isopen={isOpen}>
         <Add />
       </IconButtonStyled>
+      <IconButtonStyled
+        onClick={handleDelete}
+        style={{ transform: "translate(-50%, -120%)" }}
+      >
+        {isProcessing ? <LoadingIcon /> : <Delete />}
+      </IconButtonStyled>
+      {error && (
+        <Typography textAlign={"center"}>
+          There was a problem: {error}
+        </Typography>
+      )}
     </HeaderLayout>
   );
 };

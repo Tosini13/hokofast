@@ -14,17 +14,21 @@ export const PaperStyled = styled(Paper)`
   }
 `;
 
+const StackContainer = styled(Stack)`
+  background-color: #f2f2f2;
+  flex-grow: 1;
+  padding: 5px 20px;
+  padding-top: 274px;
+  padding-bottom: 65px;
+`;
+
 type TListsProps = {};
 
 const Lists: React.FC<TListsProps> = () => {
   const navigate = useNavigate();
   const data = useListsService();
   return (
-    <Stack
-      spacing={2}
-      padding="5px 20px"
-      style={{ backgroundColor: "#F2F2F2", flexGrow: 1 }}
-    >
+    <StackContainer spacing={2}>
       {data?.map((list) => (
         <PaperStyled
           key={list.id}
@@ -43,7 +47,7 @@ const Lists: React.FC<TListsProps> = () => {
           </Stack>
         </PaperStyled>
       ))}
-    </Stack>
+    </StackContainer>
   );
 };
 

@@ -6,7 +6,7 @@ const HeaderBackground = styled(Box)`
   height: fit-content;
   padding-bottom: 90px;
   background: url(${Hokofast});
-  position: relative;
+  position: fixed;
   &::before {
     content: "";
     position: absolute;
