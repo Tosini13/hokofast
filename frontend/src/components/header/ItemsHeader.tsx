@@ -18,7 +18,7 @@ import HeaderMenu from "./HeaderMenu";
 const withData = (Component: React.ComponentType<TItemsHeaderProps>) => {
   return () => {
     const { listId } = useParams();
-    const lists = useListsService();
+    const { lists } = useListsService();
     const list = useMemo(
       () => lists?.find((l) => l.id === listId),
       [listId, lists]

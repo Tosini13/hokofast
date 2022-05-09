@@ -10,6 +10,7 @@ export const ITEM_API_URL = (listId: Id, itemId: Id) =>
   `${API_URL}/lists/${listId}/items/${itemId}`;
 
 export const LISTS_API_URL = `${API_URL}/lists`;
+export const LISTS_GUEST_API_URL = `${API_URL}/lists-guest`;
 export const LIST_API_URL = (listId: Id) => `${API_URL}/lists/${listId}`;
 
 /* ---------------- AUTH ------------------- */

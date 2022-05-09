@@ -1,8 +1,8 @@
 import { Paper, Stack, styled, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { TList } from "../../models/backend";
 import { toPath } from "../../routing/paths";
-import { useListsService } from "../../services/lists/lists-service";
 
 export const PaperStyled = styled(Paper)`
   cursor: pointer;
@@ -14,22 +14,15 @@ export const PaperStyled = styled(Paper)`
   }
 `;
 
-const StackContainer = styled(Stack)`
-  background-color: #f2f2f2;
-  flex-grow: 1;
-  padding: 5px 20px;
-  padding-top: 274px;
-  padding-bottom: 65px;
-`;
+type TListsProps = {
+  lists: TList[];
+};
 
-type TListsProps = {};
-
-const Lists: React.FC<TListsProps> = () => {
+const Lists: React.FC<TListsProps> = ({ lists }) => {
   const navigate = useNavigate();
-  const data = useListsService();
   return (
-    <StackContainer spacing={2}>
-      {data?.map((list) => (
+    <Stack spacing={2}>
+      {lists.map((list) => (
         <PaperStyled
           key={list.id}
           onClick={() => navigate(toPath.list(list.id))}
@@ -47,7 +40,7 @@ const Lists: React.FC<TListsProps> = () => {
           </Stack>
         </PaperStyled>
       ))}
-    </StackContainer>
+    </Stack>
   );
 };
 

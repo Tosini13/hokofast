@@ -1,15 +1,23 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
-import { LISTS_API_URL, LIST_API_URL } from "../../models/endpoints";
+import {
+  LISTS_API_URL,
+  LISTS_GUEST_API_URL,
+  LIST_API_URL,
+} from "../../models/endpoints";
 import { TList } from "../../models/backend";
 import { Id } from "../../types/utils";
 
 const getLists = () =>
   axios.get<TList[]>(LISTS_API_URL).then((data) => data.data);
 
+const getListsGuest = () =>
+  axios.get<TList[]>(LISTS_GUEST_API_URL).then((data) => data.data);
+
 export const useListsService = () => {
-  const [lists, setLists] = useState<TList[]>();
+  const [myLists, setMyLists] = useState<TList[] | undefined>();
+  const [guestLists, setGuestLists] = useState<TList[] | undefined>();
 
   useEffect(() => {
     const queryClient = new QueryClient();
@@ -19,11 +27,28 @@ export const useListsService = () => {
     });
 
     observer.subscribe((lists) => {
-      setLists(lists.data?.data);
+      setMyLists(lists.data?.data ?? []);
     });
   }, []);
 
-  return lists;
+  useEffect(() => {
+    const queryClient = new QueryClient();
+    queryClient.setQueryDefaults("lists-guest", { queryFn: getListsGuest });
+    const observer = new QueryObserver<{ data: TList[] }>(queryClient, {
+      queryKey: "lists-guest",
+    });
+
+    observer.subscribe((lists) => {
+      setGuestLists(lists.data?.data ?? []);
+    });
+  }, []);
+
+  const lists = React.useMemo(
+    () => [...(myLists ?? []), ...(guestLists ?? [])],
+    [myLists, guestLists]
+  );
+
+  return { myLists, guestLists, lists };
 };
 
 export const editList = async (
