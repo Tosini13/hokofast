@@ -16,6 +16,7 @@ import {
 import {
   createList,
   deleteList,
+  getGuestLists,
   getLists,
   updateList,
 } from "./controllers/lists";
@@ -47,7 +48,8 @@ router.delete("/lists/:listId/items/:itemId", deleteItem);
 
 // -----------------------------------------
 // LISTS
-router.get("/lists", getLists);
+router.get("/lists", verifyToken, getLists);
+router.get("/lists-guest", verifyToken, getGuestLists);
 router.post("/lists", createList);
 router.put("/lists/:listId", updateList);
 router.delete("/lists/:listId", deleteList);

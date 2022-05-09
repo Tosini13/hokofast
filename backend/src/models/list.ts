@@ -13,11 +13,21 @@ const SList = new Schema({
     type: String,
     required: [true, "dateTime is required"],
   },
+  author: {
+    type: String,
+    required: [true, "author is required"],
+  },
+  guests: {
+    type: [String],
+    required: false,
+  },
 });
 
 export type TList = {
   name: string;
   dateTime: string;
+  author: Id;
+  guests: Id[];
 };
 
 export type TListRes = TList & {
@@ -27,6 +37,8 @@ export type TListRes = TList & {
 export interface IList extends Document {
   name: string;
   dateTime: string;
+  author: Id;
+  guests: Id[];
 }
 
 const List = mongoose.model<IList>("lists", SList);
