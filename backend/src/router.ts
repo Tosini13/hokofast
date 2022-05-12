@@ -50,8 +50,8 @@ router.delete("/lists/:listId/items/:itemId", deleteItem);
 // LISTS
 router.get("/lists", verifyToken, getLists);
 router.get("/lists-guest", verifyToken, getGuestLists);
-router.post("/lists", createList);
-router.put("/lists/:listId", updateList);
+router.post("/lists", verifyToken, createList);
+router.put("/lists/:listId", verifyToken, updateList);
 router.delete("/lists/:listId", deleteList);
 
 export default router;

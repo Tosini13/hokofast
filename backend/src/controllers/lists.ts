@@ -8,7 +8,7 @@ import List, { IList, TList, TListRes } from "../models/list";
 import { EGetUser } from "../models/messages/users";
 import { createError } from "./backend-messages";
 
-const getListFromBody = (body: TList): TList => ({
+const getListFromBody = (body: Omit<TList, "dateTime">): TList => ({
   name: body.name,
   dateTime: new Date().toString(),
   author: body.author,
@@ -73,8 +73,13 @@ export const getGuestLists = async (
   }
 };
 
-export const createList = async (req: Request, res: Response) => {
-  const listData = getListFromBody(req.body);
+export const createList = async (req: IVerifyTokenRequest, res: Response) => {
+  const body: Omit<TList, "author" | "dateTime"> = req.body;
+  const currentUser = req.currentUser;
+  const listData = getListFromBody({
+    ...body,
+    author: currentUser.user_id,
+  });
   try {
     const newList = await List.create(listData);
     const list = convertList(newList);
@@ -86,8 +91,13 @@ export const createList = async (req: Request, res: Response) => {
   }
 };
 
-export const updateList = async (req: Request, res: Response) => {
-  const list = getListFromBody(req.body);
+export const updateList = async (req: IVerifyTokenRequest, res: Response) => {
+  const body: Omit<TList, "author" | "dateTime"> = req.body;
+  const currentUser = req.currentUser;
+  const list = getListFromBody({
+    ...body,
+    author: currentUser.user_id,
+  });
 
   try {
     await List.updateOne({ _id: req.params.listId }, list);
