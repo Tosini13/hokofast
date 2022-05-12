@@ -1,8 +1,15 @@
-import { CircularProgress, Grid, styled } from "@mui/material";
+import {
+  CircularProgress,
+  CircularProgressProps,
+  Grid,
+  styled,
+} from "@mui/material";
 
-type TLoadingProps = {};
+type LoadingProps = CircularProgressProps & {
+  customColor?: string;
+};
 
-const Loading: React.FC<TLoadingProps> = () => {
+const Loading: React.FC<LoadingProps> = ({ customColor, ...props }) => {
   return (
     <Grid
       container
@@ -11,7 +18,7 @@ const Loading: React.FC<TLoadingProps> = () => {
       style={{ height: "100px" }}
     >
       <Grid item>
-        <CircularProgress />
+        <CircularProgress {...props} style={{ color: customColor }} />
       </Grid>
     </Grid>
   );
@@ -19,7 +26,8 @@ const Loading: React.FC<TLoadingProps> = () => {
 
 export default Loading;
 
-export const LoadingIcon = styled(CircularProgress)`
+export const LoadingIcon = styled(CircularProgress)<{ customColor?: string }>`
   width: 24px !important;
   height: 24px !important;
+  ${(props) => (props.customColor ? `color: ${props.customColor}` : "")}
 `;
