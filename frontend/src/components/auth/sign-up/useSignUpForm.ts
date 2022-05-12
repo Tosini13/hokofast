@@ -13,10 +13,14 @@ type TSignUpForm = {
 };
 
 type TUseSignUpFormProps = {
+  failureCallBack?: (e?: string) => void;
   successCallback: () => void;
 };
 
-export const useSignUpForm = ({ successCallback }: TUseSignUpFormProps) => {
+export const useSignUpForm = ({
+  successCallback,
+  failureCallBack,
+}: TUseSignUpFormProps) => {
   const authStore = useContext(AuthStoreContext);
   const { handleSubmit, control, watch, setError } = useForm<TSignUpForm>();
 
@@ -40,6 +44,7 @@ export const useSignUpForm = ({ successCallback }: TUseSignUpFormProps) => {
       password: data.password,
       nickname: data.nickname,
       successCallBack: successCallback,
+      failureCallBack,
     };
 
     try {

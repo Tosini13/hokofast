@@ -8,12 +8,15 @@ import LayoutAuth, { LogoAuth } from "../Layout";
 import { Link, useNavigate } from "react-router-dom";
 import TextField from "../../controlled/TextField";
 import { useSignUpForm } from "./useSignUpForm";
+import { useState } from "react";
 
 type TSignUpProps = {};
 
 const SignUp: React.FC<TSignUpProps> = () => {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { handleSubmit, control } = useSignUpForm({
+    failureCallBack: (_e?: string) => setError(`There was a problem`),
     successCallback: () => navigate(EPath.home),
   });
   return (
@@ -47,6 +50,9 @@ const SignUp: React.FC<TSignUpProps> = () => {
           />
           <ButtonPrimary type="submit">Sign Up</ButtonPrimary>
         </Stack>
+        <Typography style={{ height: "24px" }} color="red" textAlign={"center"}>
+          {error}
+        </Typography>
         <Typography color="primary" textAlign="center">
           or
         </Typography>
