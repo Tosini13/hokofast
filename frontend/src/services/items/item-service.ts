@@ -58,9 +58,7 @@ export const useItemsService = (listId: Id) => {
 export const createItem = async (
   listId: string,
   data: Omit<TItem, "id" | "list">
-) => {
-  await axios.post(ITEMS_API_URL(listId), data);
-};
+) => await axios.post(ITEMS_API_URL(listId), data);
 
 export const editItem = async (
   listId: string,

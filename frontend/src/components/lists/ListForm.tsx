@@ -12,7 +12,11 @@ const ListForm: React.FC<TListFormProps> = () => {
   const theme = useTheme();
   return (
     <form
-      style={{ flexGrow: 1, padding: "20px", backgroundColor: "#F2F2F2" }}
+      style={{
+        flexGrow: 1,
+        padding: "20px",
+        backgroundColor: "#F2F2F2",
+      }}
       onSubmit={handleSubmit}
     >
       <Stack spacing={2}>

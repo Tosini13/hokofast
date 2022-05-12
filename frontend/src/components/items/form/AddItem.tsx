@@ -1,8 +1,9 @@
-import { useCallback, useState } from "react";
 import { Add } from "@mui/icons-material";
-import { Button, Stack, styled, TextField } from "@mui/material";
-import { createItem } from "../../../services/items/item-service";
+import { Button, Stack, styled } from "@mui/material";
 import { Id } from "../../../types/utils";
+import { useItemForm } from "./useItemForm";
+import TextField from "../../controlled/TextField";
+import { LoadingIcon } from "../../utils/Loading";
 
 const StackContainer = styled(Stack)`
   padding: 5px;
@@ -11,18 +12,12 @@ const StackContainer = styled(Stack)`
   box-shadow: 0px 0px 7px 0px rgb(0 0 0 / 20%);
 `;
 
-const TextFieldStyled = styled(TextField)`
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 0px 4px;
-
-  .MuiInput-root::before {
-    display: none;
-  }
-  .MuiInput-root::after {
-    display: none;
-  }
-`;
+const inputStyle = {
+  backgroundColor: "#eee",
+  padding: "0px 4px",
+  boxShadow: "none",
+  margin: "0px",
+};
 
 export const ButtonStyled = styled(Button)`
   min-width: 45px;
@@ -34,41 +29,27 @@ type TAddItemProps = {
 };
 
 const AddItem: React.FC<TAddItemProps> = ({ listId }) => {
-  const [name, setName] = useState("");
-  const [amount, setAmount] = useState("");
-
-  const handleSubmit = useCallback(
-    (name: string) => {
-      createItem(listId, { name });
-    },
-    [listId]
-  );
+  const { handleSubmit, control, isProcessing } = useItemForm(listId);
 
   return (
-    <form
-      style={{ alignSelf: "center" }}
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(name);
-      }}
-    >
+    <form style={{ alignSelf: "center" }} onSubmit={handleSubmit}>
       <StackContainer direction={"row"} spacing={1}>
         <Stack spacing={1}>
-          <TextFieldStyled
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            variant="standard"
-            placeholder="Product name"
+          <TextField
+            name="name"
+            placeholder={"Name"}
+            control={control}
+            style={inputStyle}
           />
-          <TextFieldStyled
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            variant="standard"
-            placeholder="Amount"
+          <TextField
+            name="amount"
+            placeholder={"Amount"}
+            control={control}
+            style={inputStyle}
           />
         </Stack>
         <ButtonStyled color="secondary" variant="contained" type="submit">
-          <Add />
+          {isProcessing ? <LoadingIcon mode="light" /> : <Add />}
         </ButtonStyled>
       </StackContainer>
     </form>

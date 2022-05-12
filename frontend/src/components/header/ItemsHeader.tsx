@@ -1,6 +1,6 @@
 import { Add, Delete } from "@mui/icons-material";
 import { IconButton, Stack, styled, Typography } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TList } from "../../models/backend";
 import { EPath } from "../../routing/paths";
@@ -16,7 +16,7 @@ import HeaderLayout from "./HeaderLayout";
 import HeaderMenu from "./HeaderMenu";
 
 const withData = (Component: React.ComponentType<TItemsHeaderProps>) => {
-  return () => {
+  return (props: Omit<TItemsHeaderProps, "list">) => {
     const { listId } = useParams();
     const { lists } = useListsService();
     const list = useMemo(
@@ -30,7 +30,7 @@ const withData = (Component: React.ComponentType<TItemsHeaderProps>) => {
         </HeaderLayout>
       );
     }
-    return <Component list={list} />;
+    return <Component {...props} list={list} />;
   };
 };
 
@@ -47,11 +47,16 @@ const IconButtonStyled = styled(IconButton)<{ isopen?: boolean }>`
 
 type TItemsHeaderProps = {
   list: TList;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
 };
 
-const ItemsHeader: React.FC<TItemsHeaderProps> = ({ list }) => {
+const ItemsHeader: React.FC<TItemsHeaderProps> = ({
+  list,
+  isOpen,
+  setIsOpen,
+}) => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const { id } = list;
   const { isProcessing, error, execute } = useAsync();
 
