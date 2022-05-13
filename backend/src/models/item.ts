@@ -13,11 +13,16 @@ const SItem = new Schema({
     type: String,
     required: [true, "list is required"],
   },
+  taken: {
+    type: Boolean,
+    required: [true, "taken is required"],
+  },
 });
 
 export type TItem = {
   name: string;
   list: Id;
+  taken: boolean;
 };
 
 export type TItemRes = TItem & {
@@ -27,6 +32,7 @@ export type TItemRes = TItem & {
 export interface IItem extends Document {
   name: string;
   list: Id;
+  taken: boolean;
 }
 
 const Item = mongoose.model<IItem>("items", SItem);

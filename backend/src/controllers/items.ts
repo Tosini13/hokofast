@@ -11,14 +11,20 @@ const getItemFromBody = (
   body: Omit<TItem, "list">,
   params: { listId?: string }
 ): TItem => ({
-  name: body.name,
   list: params?.listId,
+  ...body,
 });
 
-export const convertItem = (doc: LeanDocument<IItem>): TItemRes => ({
-  id: doc._id,
-  name: doc.name,
-  list: doc.list,
+export const convertItem = ({
+  _id,
+  name,
+  list,
+  taken,
+}: LeanDocument<IItem>): TItemRes => ({
+  id: _id,
+  name,
+  list,
+  taken,
 });
 
 export const getItems = async (req: Request, res: Response) => {
@@ -31,7 +37,7 @@ export const getItems = async (req: Request, res: Response) => {
 };
 
 export const createItem = async (req: Request, res: Response) => {
-  const itemData = getItemFromBody(req.body, req.params);
+  const itemData = getItemFromBody({ ...req.body, taken: false }, req.params);
   const ifListExists = await checkIfListExists(itemData.list);
 
   if (!ifListExists) {
