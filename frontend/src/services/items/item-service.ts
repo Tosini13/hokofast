@@ -57,16 +57,14 @@ export const useItemsService = (listId: Id) => {
 
 export const createItem = async (
   listId: string,
-  data: Omit<TItem, "id" | "list">
+  data: Omit<TItem, "id" | "list" | "taken">
 ) => await axios.post(ITEMS_API_URL(listId), data);
 
 export const editItem = async (
   listId: string,
   itemId: Id,
   data: Omit<TItem, "id" | "list">
-) => {
-  await axios.put(ITEM_API_URL(listId, itemId), data);
-};
+) => await axios.put(ITEM_API_URL(listId, itemId), data);
 
 export const deleteItem = async (listId: string, itemId: Id) => {
   await axios.delete(ITEM_API_URL(listId, itemId));
