@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 import Hokofast from "../../resources/svg/hoko-background.svg";
 
 const HeaderBackground = styled(Box)`
+  z-index: 1;
   width: 100%;
   height: fit-content;
   padding-bottom: 90px;

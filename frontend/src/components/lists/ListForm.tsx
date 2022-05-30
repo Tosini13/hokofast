@@ -19,7 +19,13 @@ const ListForm: React.FC<TListFormProps> = () => {
       }}
       onSubmit={handleSubmit}
     >
-      <Stack spacing={2}>
+      <Stack
+        spacing={2}
+        style={{
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <TextField
           name="name"
           placeholder={"List name"}
