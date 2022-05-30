@@ -13,6 +13,7 @@ import DefaultAvatar from "../../resources/svg/default_avatar.svg";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../routing/paths";
 import { AuthStoreContext } from "../../stores/authStore";
+import DrawerNavigation from "../navigation/DrawerNavigation";
 
 const MenuIconButton = styled(IconButton)`
   background-color: white;
@@ -34,6 +35,7 @@ type THeaderMenuProps = {};
 const HeaderMenu: React.FC<THeaderMenuProps> = () => {
   const authStore = useContext(AuthStoreContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [isDrawerOpen, setIsDraweOpen] = useState(false);
   const navigate = useNavigate();
   const avatarUrl = useMemo(() => DefaultAvatar, []);
 
@@ -51,7 +53,10 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
       justifyContent="space-between"
       alignItems={"center"}
     >
-      <MenuIconButton color="primary">
+      <MenuIconButton
+        color="primary"
+        onClick={() => setIsDraweOpen((open) => !open)}
+      >
         <img
           src={MenuIcon}
           alt="MenuIcon"
@@ -76,6 +81,10 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
           )}
         </DialogActions>
       </Dialog>
+      <DrawerNavigation
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDraweOpen(false)}
+      />
     </Stack>
   );
 };
