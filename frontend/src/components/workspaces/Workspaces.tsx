@@ -12,11 +12,13 @@ const Workspaces: React.FC<TWorkspacesProps> = ({ workspaces }) => {
   return (
     <Stack spacing={3}>
       {workspaces.map((workspace) => (
-        <WorkspaceContainer isActive={workspace.id === "1"}>
+        <WorkspaceContainer key={workspace.id} isActive={workspace.id === "1"}>
           <Workspace workspace={workspace} />
         </WorkspaceContainer>
       ))}
-      <AddWorkspaceButton />
+      <WorkspaceContainer>
+        <AddWorkspaceButton />
+      </WorkspaceContainer>
     </Stack>
   );
 };

@@ -1,24 +1,7 @@
 import { Drawer, Stack } from "@mui/material";
-import { TWorkspace } from "../../types/workspaces";
 import Workspaces from "../workspaces/Workspaces";
-
-/**
- * @todo remove mock
- */
-const mockWorkspaces: TWorkspace[] = [
-  {
-    id: "1",
-    name: "my",
-    author: "me",
-    users: [],
-  },
-  {
-    id: "2",
-    name: "home",
-    author: "me",
-    users: [],
-  },
-];
+import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
+import Loading from "../utils/Loading";
 
 type TDrawerNavigationProps = {
   isOpen: boolean;
@@ -29,10 +12,13 @@ const DrawerNavigation: React.FC<TDrawerNavigationProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { workspaces, isProcessing } = useWorkspacesService();
+  console.log("workspaces", workspaces);
+  console.log("isProcessing", isProcessing);
   return (
     <Drawer open={isOpen} onClose={onClose}>
       <Stack style={{ minWidth: "100px", padding: "5px 0px" }}>
-        <Workspaces workspaces={mockWorkspaces} />
+        {isProcessing ? <Loading /> : <Workspaces workspaces={workspaces} />}
       </Stack>
     </Drawer>
   );

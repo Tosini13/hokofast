@@ -13,6 +13,12 @@ export const LISTS_API_URL = `${API_URL}/lists`;
 export const LISTS_GUEST_API_URL = `${API_URL}/lists-guest`;
 export const LIST_API_URL = (listId: Id) => `${API_URL}/lists/${listId}`;
 
+/* ---------------- WORKSPACES ------------------- */
+export const WORKSPACES_API_URL = `${API_URL}/workspaces`;
+export const WORKSPACES_USERS_API_URL = `${API_URL}/workspaces-guest`;
+export const WORKSPACE_API_URL = (workspaceId: Id) =>
+  `${API_URL}/workspaces/${workspaceId}`;
+
 /* ---------------- AUTH ------------------- */
 export const LOGIN_API_URL = `${API_URL}/login`;
 export const RESET_PASSWORD_API_URL = `${API_URL}/reset-password`;
