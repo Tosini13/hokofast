@@ -61,7 +61,7 @@ export const getWorkspaces = async (
   }
 };
 
-export const getGuestWorkspaces = async (
+export const getUserWorkspaces = async (
   req: IVerifyTokenRequest,
   res: Response
 ) => {

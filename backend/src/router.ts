@@ -21,6 +21,13 @@ import {
   updateList,
 } from "./controllers/lists";
 import { getUser, updateUser } from "./controllers/users";
+import {
+  createWorkspace,
+  deleteWorkspace,
+  getUserWorkspaces,
+  getWorkspaces,
+  updateWorkspace,
+} from "./controllers/workspace";
 import { verifyToken } from "./middleware/auth";
 
 const router = express.Router();
@@ -54,4 +61,11 @@ router.post("/lists", verifyToken, createList);
 router.put("/lists/:listId", verifyToken, updateList);
 router.delete("/lists/:listId", deleteList);
 
+// -----------------------------------------
+// WORKSPACE
+router.get("/workspaces", verifyToken, getWorkspaces);
+router.get("/workspaces-guest", verifyToken, getUserWorkspaces);
+router.post("/workspaces", verifyToken, createWorkspace);
+router.put("/workspaces/:workspaceId", verifyToken, updateWorkspace);
+router.delete("/workspaces/:workspaceId", deleteWorkspace);
 export default router;
