@@ -10,7 +10,7 @@ import { TItem } from "../../types/items";
 import { Id } from "../../types/utils";
 
 import socketIOClient from "socket.io-client";
-import { EEvents } from "../../types/backend/events";
+import { EEvents, TEventBody, TEventParams } from "../../types/backend/events";
 
 const getItems = (listId: Id) => () =>
   axios.get<TItem[]>(ITEMS_API_URL(listId)).then((data) => data.data);
@@ -33,24 +33,30 @@ export const useItemsService = (listId: Id) => {
   }, [listId]);
 
   useEffect(() => {
-    socket.on(EEvents.createdItem, (data: TItem) => {
-      setItems((prev) => [...(prev ?? []), data]);
+    socket.on(EEvents.createdItem, (data: TEventBody<TItem, TEventParams>) => {
+      if (data.params?.listId === listId) {
+        setItems((prev) => [...(prev ?? []), data.data]);
+      }
     });
-  }, [socket]);
+  }, [socket, listId]);
 
   useEffect(() => {
-    socket.on(EEvents.updatedItem, (data: TItem) => {
-      setItems((prev) =>
-        prev?.map((item) => (item.id === data.id ? data : item))
-      );
+    socket.on(EEvents.updatedItem, (data: TEventBody<TItem, TEventParams>) => {
+      if (data.params?.listId === listId) {
+        setItems((prev) =>
+          prev?.map((item) => (item.id === data.data.id ? data.data : item))
+        );
+      }
     });
-  }, [socket]);
+  }, [socket, listId]);
 
   useEffect(() => {
-    socket.on(EEvents.deletedItem, (data: TItem) => {
-      setItems((prev) => prev?.filter((item) => item.id !== data.id));
+    socket.on(EEvents.deletedItem, (data: TEventBody<TItem, TEventParams>) => {
+      if (data.params?.listId === listId) {
+        setItems((prev) => prev?.filter((item) => item.id !== data.data.id));
+      }
     });
-  }, [socket]);
+  }, [socket, listId]);
 
   return items;
 };

@@ -6,3 +6,12 @@ export enum EEvents {
   updatedList = "UPDATED_LIST",
   deletedList = "DELETED_LIST",
 }
+
+export type TEventBody<TData, TParams = void> = {
+  data: TData;
+  params?: TParams;
+};
+
+export type TEventParams = {
+  listId: string;
+};

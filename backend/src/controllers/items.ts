@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import { io } from "..";
-import { EEvents } from "../models/events";
+import { EEvents, TEventBody } from "../models/events";
+import { TEventParams } from "../models/events/items";
 import Item, { IItem, TItem, TItemRes } from "../models/item";
 import List from "../models/list";
 import { checkIfListExists } from "./actions/lists";
@@ -49,7 +50,13 @@ export const createItem = async (req: Request, res: Response) => {
     const newItem = await Item.create(itemData);
     const item = convertItem(newItem);
 
-    io.emit(EEvents.createdItem, item);
+    const emitBody: TEventBody<TItem, TEventParams> = {
+      data: item,
+      params: {
+        listId: item.list,
+      },
+    };
+    io.emit(EEvents.createdItem, emitBody);
     res.send(item);
   } catch (e) {
     console.error(e);
@@ -67,7 +74,13 @@ export const updateItem = async (req: Request, res: Response) => {
 
   try {
     await Item.updateOne({ _id: req.params.itemId }, item);
-    io.emit(EEvents.updatedItem, item);
+    const emitBody: TEventBody<TItem, TEventParams> = {
+      data: item,
+      params: {
+        listId: item.list,
+      },
+    };
+    io.emit(EEvents.updatedItem, emitBody);
     res.send(item);
   } catch (e) {
     console.error(e);
@@ -80,7 +93,13 @@ export const deleteItem = async (req: Request, res: Response) => {
       _id: req.params.itemId,
     });
     const item = convertItem(deletedItem);
-    io.emit(EEvents.deletedItem, item);
+    const emitBody: TEventBody<TItem, TEventParams> = {
+      data: item,
+      params: {
+        listId: item.list,
+      },
+    };
+    io.emit(EEvents.deletedItem, emitBody);
     res.send(item);
   } catch (e) {
     console.error(e);
