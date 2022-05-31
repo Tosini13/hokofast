@@ -14,17 +14,12 @@ const MenuIconButton = styled(IconButton)`
 type THamburgerProps = {};
 
 const Hamburger: React.FC<THamburgerProps> = () => {
-  console.log("hamburger");
   const [isDrawerOpen, setIsDraweOpen] = useState(false);
-  console.log("isDrawerOpen", isDrawerOpen);
   return (
     <>
       <MenuIconButton
         color="primary"
-        onClick={() => {
-          console.log("CLIC");
-          setIsDraweOpen((open) => !open);
-        }}
+        onClick={() => setIsDraweOpen((open) => !open)}
       >
         <img
           src={MenuIcon}

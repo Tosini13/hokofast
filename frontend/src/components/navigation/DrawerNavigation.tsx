@@ -13,8 +13,6 @@ const DrawerNavigation: React.FC<TDrawerNavigationProps> = ({
   onClose,
 }) => {
   const { workspaces, isProcessing } = useWorkspacesService();
-  console.log("workspaces", workspaces);
-  console.log("isProcessing", isProcessing);
   return (
     <Drawer open={isOpen} onClose={onClose}>
       <Stack style={{ minWidth: "100px", padding: "5px 0px" }}>

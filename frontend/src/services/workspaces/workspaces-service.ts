@@ -16,7 +16,6 @@ export const useWorkspacesService = () => {
   useEffect(() => {
     async function fetchData() {
       const workspaces = await execute(getWorkspaces());
-      console.log("workspaces fetch", workspaces);
       setWorkspaces(workspaces.data);
     }
     fetchData();
@@ -24,3 +23,6 @@ export const useWorkspacesService = () => {
 
   return { workspaces, isProcessing };
 };
+
+export const addWorkspace = async (data: Omit<TWorkspace, "id" | "author">) =>
+  await axios.post<TWorkspace>(WORKSPACES_API_URL, data);

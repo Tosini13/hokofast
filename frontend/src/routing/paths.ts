@@ -10,4 +10,5 @@ export enum EPath {
 
 export const toPath = {
   list: (listId: string) => `/list/${listId}`,
+  workspace: (workspaceId: string) => `/workspace/${workspaceId}`,
 };
