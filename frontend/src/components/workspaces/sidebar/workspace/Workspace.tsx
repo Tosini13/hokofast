@@ -1,6 +1,6 @@
 import { Avatar, Stack } from "@mui/material";
-import { TWorkspace } from "../../../types/workspaces";
-import DefaultAvatar from "../../../resources/svg/default_avatar.svg";
+import { TWorkspace } from "../../../../types/workspaces";
+import DefaultAvatar from "../../../../resources/svg/default_avatar.svg";
 import WorkspaceTitle from "./WorkspaceTitle";
 
 type TWorkspaceProps = {

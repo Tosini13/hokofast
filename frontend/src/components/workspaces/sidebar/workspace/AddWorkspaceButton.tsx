@@ -2,7 +2,7 @@ import { AddCircleOutlined } from "@mui/icons-material";
 import { Stack } from "@mui/material";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { EPath } from "../../../routing/paths";
+import { EPath } from "../../../../routing/paths";
 import WorkspaceTitle from "./WorkspaceTitle";
 
 type TAddWorkspaceButtonProps = {};

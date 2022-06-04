@@ -1,7 +1,7 @@
 import { Drawer, Stack } from "@mui/material";
-import Workspaces from "../workspaces/Workspaces";
 import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
 import Loading from "../utils/Loading";
+import Workspaces from "../workspaces/sidebar/Workspaces";
 
 type TDrawerNavigationProps = {
   isOpen: boolean;

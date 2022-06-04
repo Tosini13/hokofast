@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import { TWorkspace } from "../../types/workspaces";
+import { TWorkspace } from "../../../types/workspaces";
 import AddWorkspaceButton from "./workspace/AddWorkspaceButton";
 import Workspace from "./workspace/Workspace";
 import WorkspaceContainer from "./workspace/WorkspaceContainer";
