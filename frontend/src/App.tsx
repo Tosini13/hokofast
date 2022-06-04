@@ -7,6 +7,7 @@ import ListsPage from "./pages/ListsPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import WorkspaceFormPage from "./pages/WorkspaceFormPage";
+import WorkspacePage from "./pages/WorkspacePage";
 import { EPath } from "./routing/paths";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path={EPath.home} element={<ListsPage />} />
           <Route path={EPath.addList} element={<ListFormPage />} />
           <Route path={EPath.addWorkspace} element={<WorkspaceFormPage />} />
+          <Route path={EPath.workspace} element={<WorkspacePage />} />
           <Route path={EPath.signIn} element={<SignInPage />} />
           <Route path={EPath.signUp} element={<SignUpPage />} />
         </Routes>

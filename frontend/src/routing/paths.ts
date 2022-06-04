@@ -3,6 +3,7 @@ export enum EPath {
   list = "/list/:listId",
   addList = "/add-list",
   addWorkspace = "/add-workspace",
+  workspace = "/workspace/:workspaceId",
   colaboration = "/colaboration",
   signIn = "/sign-in",
   signUp = "/sign-up",
