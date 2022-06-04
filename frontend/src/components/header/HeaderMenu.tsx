@@ -7,7 +7,7 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import DefaultAvatar from "../../resources/svg/default_avatar.svg";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../routing/paths";
@@ -37,6 +37,8 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
     [navigate, authStore]
   );
 
+  const handleClose = useCallback(() => setIsOpen(false), []);
+
   return (
     <Stack
       direction={"row"}
@@ -47,7 +49,7 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
       <AvatarIconButton size="large" onClick={() => setIsOpen(!isOpen)}>
         <Avatar alt="user's avatar" src={avatarUrl} />
       </AvatarIconButton>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen} onClose={handleClose}>
         <DialogActions>
           {authStore.isLoggedIn ? (
             <Button onClick={logOut}>Log Out</Button>
