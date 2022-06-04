@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { TUser } from "../../../models/backend";
-import { EPath } from "../../../routing/paths";
+import { toPath } from "../../../routing/paths";
 import { addWorkspace } from "../../../services/workspaces/workspaces-service";
 import useAsync from "../../../utils/useAsync";
 
@@ -30,11 +30,7 @@ export const useWorkspaceForm = () => {
           users: data.users.map((user) => user.id),
         })
       );
-      /**
-       * @todo navigate to workspace view
-       * toPath.workspace(res.data.id)
-       */
-      navigate(EPath.home);
+      navigate(toPath.workspace(res.data.id));
     } catch (e) {
       console.error(e);
     }
