@@ -9,9 +9,12 @@ const SItem = new Schema({
     type: String,
     required: [true, "name is required"],
   },
-  list: {
+  workspace: {
     type: String,
-    required: [true, "list is required"],
+    required: [true, "workspace is required"],
+  },
+  category: {
+    type: String,
   },
   taken: {
     type: Boolean,
@@ -21,7 +24,8 @@ const SItem = new Schema({
 
 export type TItem = {
   name: string;
-  list: Id;
+  workspace: Id;
+  category?: Id;
   taken: boolean;
 };
 
@@ -31,7 +35,8 @@ export type TItemRes = TItem & {
 
 export interface IItem extends Document {
   name: string;
-  list: Id;
+  workspace: Id;
+  category?: Id;
   taken: boolean;
 }
 

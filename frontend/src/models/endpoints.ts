@@ -19,6 +19,11 @@ export const WORKSPACES_USERS_API_URL = `${API_URL}/workspaces-guest`;
 export const WORKSPACE_API_URL = (workspaceId: Id) =>
   `${API_URL}/workspaces/${workspaceId}`;
 
+/* ---------------- CATEGORIES ------------------- */
+export const CATEGORIES_API_URL = `${API_URL}/categories`;
+export const CATEGORY_API_URL = (categoryId: Id) =>
+  `${API_URL}/categories/${categoryId}`;
+
 /* ---------------- AUTH ------------------- */
 export const LOGIN_API_URL = `${API_URL}/login`;
 export const RESET_PASSWORD_API_URL = `${API_URL}/reset-password`;

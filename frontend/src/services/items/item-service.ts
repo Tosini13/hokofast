@@ -12,17 +12,17 @@ import { Id } from "../../types/utils";
 import socketIOClient from "socket.io-client";
 import { EEvents, TEventBody, TEventParams } from "../../types/backend/events";
 
-const getItems = (listId: Id) => () =>
-  axios.get<TItem[]>(ITEMS_API_URL(listId)).then((data) => data.data);
+const getItems = (workspaceId: Id) => () =>
+  axios.get<TItem[]>(ITEMS_API_URL(workspaceId)).then((data) => data.data);
 
-export const useItemsService = (listId: Id) => {
+export const useItemsService = (workspaceId: Id) => {
   const [items, setItems] = useState<TItem[]>();
 
   const socket = useMemo(() => socketIOClient(SERVER_URL), []);
 
   useEffect(() => {
     const queryClient = new QueryClient();
-    queryClient.setQueryDefaults("items", { queryFn: getItems(listId) });
+    queryClient.setQueryDefaults("items", { queryFn: getItems(workspaceId) });
     const observer = new QueryObserver<TItem[]>(queryClient, {
       queryKey: "items",
     });
@@ -30,33 +30,33 @@ export const useItemsService = (listId: Id) => {
     observer.subscribe((res) => {
       setItems(res.data);
     });
-  }, [listId]);
+  }, [workspaceId]);
 
   useEffect(() => {
     socket.on(EEvents.createdItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.listId === listId) {
+      if (data.params?.workspaceId === workspaceId) {
         setItems((prev) => [...(prev ?? []), data.data]);
       }
     });
-  }, [socket, listId]);
+  }, [socket, workspaceId]);
 
   useEffect(() => {
     socket.on(EEvents.updatedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.listId === listId) {
+      if (data.params?.workspaceId === workspaceId) {
         setItems((prev) =>
           prev?.map((item) => (item.id === data.data.id ? data.data : item))
         );
       }
     });
-  }, [socket, listId]);
+  }, [socket, workspaceId]);
 
   useEffect(() => {
     socket.on(EEvents.deletedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.listId === listId) {
+      if (data.params?.workspaceId === workspaceId) {
         setItems((prev) => prev?.filter((item) => item.id !== data.data.id));
       }
     });
-  }, [socket, listId]);
+  }, [socket, workspaceId]);
 
   return items;
 };

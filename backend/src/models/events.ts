@@ -8,6 +8,9 @@ export enum EEvents {
   createdWorkspace = "CREATED_WORKSPACE",
   updatedWorkspace = "UPDATED_WORKSPACE",
   deletedWorkspace = "DELETED_WORKSPACE",
+  createdCategory = "CREATED_CATEGORY",
+  updatedCategory = "UPDATED_CATEGORY",
+  deletedCategory = "DELETED_CATEGORY",
 }
 
 export type TEventBody<TData, TParams = void> = {

@@ -8,6 +8,12 @@ import {
   setPassword,
 } from "./controllers/auth";
 import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "./controllers/categories";
+import {
   createItem,
   deleteItem,
   getItems,
@@ -49,10 +55,13 @@ router.put("/user/:id", verifyToken, updateUser);
 
 // -----------------------------------------
 // ITEMS
-router.get("/lists/:listId/items", getItems);
-router.post("/lists/:listId/items", createItem);
-router.put("/lists/:listId/items/:itemId", updateItem);
-router.delete("/lists/:listId/items/:itemId", deleteItem);
+/**
+ * @todo add verifyToken and check if user has rights to contribute to the workspace
+ */
+router.get("/workspaces/:workspaceId/items", getItems);
+router.post("/workspaces/:workspaceId/items", createItem);
+router.put("/workspaces/:workspaceId/items/:itemId", updateItem);
+router.delete("/workspaces/:workspaceId/items/:itemId", deleteItem);
 
 // -----------------------------------------
 // LISTS
@@ -61,6 +70,13 @@ router.get("/lists-guest", verifyToken, getGuestLists);
 router.post("/lists", verifyToken, createList);
 router.put("/lists/:listId", verifyToken, updateList);
 router.delete("/lists/:listId", deleteList);
+
+// -----------------------------------------
+// CATEGORIES
+router.get("/categories", getCategories);
+router.post("/categories", createCategory);
+router.put("/categories/:categoriesId", updateCategory);
+router.delete("/categories/:categoriesId", deleteCategory);
 
 // -----------------------------------------
 // WORKSPACE

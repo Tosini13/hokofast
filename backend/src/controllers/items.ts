@@ -4,33 +4,41 @@ import { io } from "..";
 import { EEvents, TEventBody } from "../models/events";
 import { TEventParams } from "../models/events/items";
 import Item, { IItem, TItem, TItemRes } from "../models/item";
-import List from "../models/list";
-import { checkIfListExists } from "./actions/lists";
+import { checkIfWorkspaceExists } from "./actions/workspaces";
 import { sendMessage } from "./backend-messages";
 
 const getItemFromBody = (
-  body: Omit<TItem, "list">,
-  params: { listId?: string }
+  body: Omit<TItem, "workspaceId">,
+  params: { workspaceId?: string }
 ): TItem => ({
-  list: params?.listId,
+  workspace: params?.workspaceId,
   ...body,
 });
 
 export const convertItem = ({
   _id,
   name,
-  list,
+  workspace,
+  category,
   taken,
 }: LeanDocument<IItem>): TItemRes => ({
   id: _id,
   name,
-  list,
+  workspace,
+  category,
   taken,
 });
 
 export const getItems = async (req: Request, res: Response) => {
+  const workspaceId = req.params.workspaceId;
+  const categoryId = req.query.category;
+  const findParams = {
+    workspace: workspaceId,
+    ...(categoryId ? { category: categoryId } : {}),
+  };
+
   try {
-    const items = await Item.find({ list: req.params.listId });
+    const items = await Item.find(findParams);
     res.send(items.map((item) => convertItem(item)));
   } catch (e) {
     console.error(e);
@@ -39,10 +47,10 @@ export const getItems = async (req: Request, res: Response) => {
 
 export const createItem = async (req: Request, res: Response) => {
   const itemData = getItemFromBody({ ...req.body, taken: false }, req.params);
-  const ifListExists = await checkIfListExists(itemData.list);
+  const ifListExists = await checkIfWorkspaceExists(itemData.workspace);
 
   if (!ifListExists) {
-    res.send(sendMessage("NO_LIST_FOUND"));
+    res.send(sendMessage("NO_WORKSPACE_FOUND"));
     return;
   }
 
@@ -53,7 +61,8 @@ export const createItem = async (req: Request, res: Response) => {
     const emitBody: TEventBody<TItem, TEventParams> = {
       data: item,
       params: {
-        listId: item.list,
+        workspaceId: item.workspace,
+        categoryId: item.category,
       },
     };
     io.emit(EEvents.createdItem, emitBody);
@@ -65,10 +74,10 @@ export const createItem = async (req: Request, res: Response) => {
 
 export const updateItem = async (req: Request, res: Response) => {
   const item = getItemFromBody(req.body, req.params);
-  const ifListExists = await checkIfListExists(item.list);
+  const ifListExists = await checkIfWorkspaceExists(item.workspace);
 
   if (!ifListExists) {
-    res.send(sendMessage("NO_LIST_FOUND"));
+    res.send(sendMessage("NO_WORKSPACE_FOUND"));
     return;
   }
 
@@ -77,7 +86,8 @@ export const updateItem = async (req: Request, res: Response) => {
     const emitBody: TEventBody<TItem, TEventParams> = {
       data: item,
       params: {
-        listId: item.list,
+        workspaceId: item.workspace,
+        categoryId: item.category,
       },
     };
     io.emit(EEvents.updatedItem, emitBody);
@@ -96,7 +106,8 @@ export const deleteItem = async (req: Request, res: Response) => {
     const emitBody: TEventBody<TItem, TEventParams> = {
       data: item,
       params: {
-        listId: item.list,
+        workspaceId: item.workspace,
+        categoryId: item.category,
       },
     };
     io.emit(EEvents.deletedItem, emitBody);
