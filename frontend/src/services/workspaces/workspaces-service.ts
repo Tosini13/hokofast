@@ -24,5 +24,6 @@ export const useWorkspacesService = () => {
   return { workspaces, isProcessing };
 };
 
-export const addWorkspace = async (data: Omit<TWorkspace, "id" | "author">) =>
+type TAddWorkspaceProps = Omit<TWorkspace, "id" | "author">;
+export const addWorkspace = async (data: TAddWorkspaceProps) =>
   await axios.post<TWorkspace>(WORKSPACES_API_URL, data);

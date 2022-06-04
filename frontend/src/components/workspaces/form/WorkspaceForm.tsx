@@ -1,14 +1,38 @@
+import { useContext, useEffect, useState } from "react";
 import { Send } from "@mui/icons-material";
-import { Button, Stack, useTheme } from "@mui/material";
+import { Button, Stack, Typography, useTheme } from "@mui/material";
 import TextField from "../../controlled/TextField";
 import { LoadingIcon } from "../../utils/Loading";
-import { useWorkspaceForm } from "./useWorkspaceForm";
+import { TWorkspaceForm, useWorkspaceForm } from "./useWorkspaceForm";
+import { getUsers } from "../../../services/users/users.service";
+import { TUser } from "../../../models/backend";
+import useAsync from "../../../utils/useAsync";
+import Autocomplete from "../../controlled/Autocomplete";
+import { observer } from "mobx-react";
+import { AuthStoreContext } from "../../../stores/authStore";
 
 type TWorkspaceFormProps = {};
 
-const WorkspaceForm: React.FC<TWorkspaceFormProps> = () => {
-  const { handleSubmit, control, isProcessing } = useWorkspaceForm();
+const WorkspaceForm: React.FC<TWorkspaceFormProps> = observer(() => {
+  const authStore = useContext(AuthStoreContext);
+
+  const [users, setUsers] = useState<TUser[]>([]);
+  const { handleSubmit, control, isProcessing, watchFormData } =
+    useWorkspaceForm();
+  const { search } = watchFormData;
   const theme = useTheme();
+  const { isProcessing: isProcessingUsers, execute } = useAsync();
+
+  useEffect(() => {
+    async function fetchData() {
+      const users: any = await execute(getUsers({ nickname: search }));
+      setUsers(users.filter((user: any) => user.id !== authStore.userId));
+    }
+    if (search.length > 1) {
+      fetchData();
+    }
+  }, [search, execute, authStore.userId]);
+
   return (
     <form onSubmit={handleSubmit}>
       <Stack
@@ -19,17 +43,46 @@ const WorkspaceForm: React.FC<TWorkspaceFormProps> = () => {
         }}
       >
         <TextField
+          fullWidth
           name="name"
           placeholder={"Workspace name"}
           control={control}
-          style={{ textAlign: "center", alignSelf: "center" }}
+          style={{
+            textAlign: "center",
+            alignSelf: "center",
+            maxWidth: "250px",
+          }}
         />
 
-        <TextField
-          name="name"
-          placeholder={"Workspace name"}
+        <Autocomplete<TWorkspaceForm, TUser, boolean>
+          multiple
+          name="users"
           control={control}
-          style={{ textAlign: "center", alignSelf: "center" }}
+          size="small"
+          loading={isProcessingUsers}
+          options={users}
+          getOptionLabel={(option) => option.nickname}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          renderOption={(props, option) => {
+            return (
+              <li {...props} key={option.id}>
+                <Typography>{option.nickname}</Typography>
+                <Typography variant="body2" color={"gray"} paddingLeft="2px">
+                  ({option.email})
+                </Typography>
+              </li>
+            );
+          }}
+          textFieldProps={{
+            name: "search",
+            placeholder: "Users",
+            control: control,
+            style: {
+              textAlign: "center",
+              alignSelf: "center",
+              maxWidth: "250px",
+            },
+          }}
         />
 
         <Button
@@ -53,6 +106,6 @@ const WorkspaceForm: React.FC<TWorkspaceFormProps> = () => {
       </Stack>
     </form>
   );
-};
+});
 
 export default WorkspaceForm;

@@ -30,3 +30,9 @@ export const SIGN_UP_API_URL = `${API_URL}/register`;
 /* ---------------- USERS ------------------- */
 export const CURRENT_USER_API_URL = `${API_URL}/user`;
 export const USER_API_URL = (id: Id) => `${API_URL}/user/${id}`;
+
+export type TUserAPIQuery = {
+  nickname?: string;
+};
+export const USERS_API_URL = ({ nickname }: TUserAPIQuery) =>
+  `${API_URL}/users?${nickname ? `nickname=${nickname}&` : ""}`;

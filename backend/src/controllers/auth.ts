@@ -172,9 +172,10 @@ export const checkToken = async (req: Request, res: Response) => {
       tokenData?.expireDate &&
       isBefore(new Date(tokenData.expireDate), new Date())
     ) {
-      return res
-        .status(200)
-        .send({ message: ECheckTokenMessage.TOKEN_EXPIRED });
+      return res.status(200).send({
+        message: ECheckTokenMessage.TOKEN_EXPIRED,
+        userId: tokenData.id,
+      });
     }
 
     if (!tokenData) {
@@ -248,6 +249,7 @@ export const isLoggedIn = async (req: IVerifyTokenRequest, res: Response) => {
   if (currentUser) {
     res.send({
       message: EIsLoggedIn.LOGGED_IN,
+      userId: currentUser.user_id,
     });
   } else {
     res.send({

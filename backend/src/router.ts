@@ -20,7 +20,7 @@ import {
   getLists,
   updateList,
 } from "./controllers/lists";
-import { getUser, updateUser } from "./controllers/users";
+import { getUser, getUsers, updateUser } from "./controllers/users";
 import {
   createWorkspace,
   deleteWorkspace,
@@ -43,6 +43,7 @@ router.post("/set-password", setPassword);
 
 // -----------------------------------------
 // USERS
+router.get("/users", verifyToken, getUsers);
 router.get("/user", verifyToken, getUser);
 router.put("/user/:id", verifyToken, updateUser);
 
@@ -68,4 +69,5 @@ router.get("/workspaces-guest", verifyToken, getUserWorkspaces);
 router.post("/workspaces", verifyToken, createWorkspace);
 router.put("/workspaces/:workspaceId", verifyToken, updateWorkspace);
 router.delete("/workspaces/:workspaceId", deleteWorkspace);
+
 export default router;
