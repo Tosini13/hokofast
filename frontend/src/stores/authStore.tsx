@@ -105,6 +105,7 @@ class Auth {
       check: action,
       logIn: action,
       logOut: action,
+      signUp: action,
     });
     this.check();
     this.userId = null;

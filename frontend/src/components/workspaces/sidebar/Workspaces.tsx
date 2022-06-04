@@ -10,7 +10,7 @@ type TWorkspacesProps = {
 
 const Workspaces: React.FC<TWorkspacesProps> = ({ workspaces }) => {
   return (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       {workspaces.map((workspace) => (
         <WorkspaceContainer key={workspace.id} isActive={workspace.id === "1"}>
           <Workspace workspace={workspace} />
