@@ -53,8 +53,18 @@ export const getWorkspaces = async (
     }).sort({
       name: 1,
     });
+
+    const guestWorkspaces = await Workspace.find({
+      users: currentUser.user_id,
+    }).sort({
+      name: 1,
+    });
+    console.log("guestWorkspaces", guestWorkspaces);
     res.send({
-      data: workspaces.map((workspace) => convertWorkspace(workspace)),
+      data: [
+        ...workspaces.map((workspace) => convertWorkspace(workspace)),
+        ...guestWorkspaces.map((workspace) => convertWorkspace(workspace)),
+      ],
     });
   } catch (e) {
     console.error(e);
