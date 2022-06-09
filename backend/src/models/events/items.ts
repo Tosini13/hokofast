@@ -1,3 +1,4 @@
 export type TEventParams = {
-  listId: string;
+  workspaceId: string;
+  categoryId?: string;
 };

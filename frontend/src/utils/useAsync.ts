@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export type TUseAsyncResult = {
   isProcessing: boolean;
@@ -9,10 +9,9 @@ export type TUseAsyncResult = {
 const useAsync = (): TUseAsyncResult => {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [error, setError] = useState<unknown | undefined>();
-  return {
-    isProcessing,
-    error,
-    execute: async <TResult>(promise: Promise<TResult>) => {
+
+  const execute = useCallback<TUseAsyncResult["execute"]>(
+    async <TResult>(promise: Promise<TResult>) => {
       try {
         setIsProcessing(true);
         const response = await promise;
@@ -29,6 +28,13 @@ const useAsync = (): TUseAsyncResult => {
         }));
       }
     },
+    []
+  );
+
+  return {
+    isProcessing,
+    error,
+    execute,
   };
 };
 

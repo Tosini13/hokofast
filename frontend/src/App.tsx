@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Route, Routes } from "react-router-dom";
 import AuthRedirect from "./components/auth/AuthGuard";
-import ListFormPage from "./pages/ListFormPage";
-import ListPage from "./pages/ListPage";
-import ListsPage from "./pages/ListsPage";
+import ItemFormPage from "./pages/ItemFormPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
+import WorkspaceFormPage from "./pages/WorkspaceFormPage";
+import WorkspacePage from "./pages/WorkspacePage";
 import { EPath } from "./routing/paths";
 
 function App() {
@@ -15,9 +15,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthRedirect>
         <Routes>
-          <Route path={EPath.list} element={<ListPage />} />
-          <Route path={EPath.home} element={<ListsPage />} />
-          <Route path={EPath.addList} element={<ListFormPage />} />
+          <Route path={EPath.home} element={<WorkspacePage />} />
+          <Route path={EPath.addItem} element={<ItemFormPage />} />
+          <Route path={EPath.addWorkspace} element={<WorkspaceFormPage />} />
+          <Route path={EPath.workspace} element={<WorkspacePage />} />
           <Route path={EPath.signIn} element={<SignInPage />} />
           <Route path={EPath.signUp} element={<SignUpPage />} />
         </Routes>

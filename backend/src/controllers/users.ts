@@ -14,6 +14,27 @@ export const convertUser = (user: LeanDocument<IUser>): TUserData => {
   };
 };
 
+export const getUsers = async (req: IVerifyTokenRequest, res: Response) => {
+  const currentUser: any = req.currentUser;
+
+  if (!currentUser) {
+    return res.status(401).send({ message: EGetUser.UNAUTHORIZED });
+  }
+
+  const nickname = req.query.nickname as string | undefined;
+
+  const users = await User.find({
+    nickname: new RegExp(nickname, "i"),
+  });
+  if (users) {
+    res.send(users.map((user) => convertUser(user)));
+  } else {
+    res.status(404).send({
+      message: EGetUser.USER_DOES_NOT_EXISTS,
+    });
+  }
+};
+
 export const getUser = async (req: IVerifyTokenRequest, res: Response) => {
   const currentUser: any = req.currentUser;
 

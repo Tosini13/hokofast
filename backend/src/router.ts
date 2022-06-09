@@ -8,6 +8,12 @@ import {
   setPassword,
 } from "./controllers/auth";
 import {
+  createCategory,
+  deleteCategory,
+  getCategories,
+  updateCategory,
+} from "./controllers/categories";
+import {
   createItem,
   deleteItem,
   getItems,
@@ -20,7 +26,14 @@ import {
   getLists,
   updateList,
 } from "./controllers/lists";
-import { getUser, updateUser } from "./controllers/users";
+import { getUser, getUsers, updateUser } from "./controllers/users";
+import {
+  createWorkspace,
+  deleteWorkspace,
+  getUserWorkspaces,
+  getWorkspaces,
+  updateWorkspace,
+} from "./controllers/workspace";
 import { verifyToken } from "./middleware/auth";
 
 const router = express.Router();
@@ -36,15 +49,19 @@ router.post("/set-password", setPassword);
 
 // -----------------------------------------
 // USERS
+router.get("/users", verifyToken, getUsers);
 router.get("/user", verifyToken, getUser);
 router.put("/user/:id", verifyToken, updateUser);
 
 // -----------------------------------------
 // ITEMS
-router.get("/lists/:listId/items", getItems);
-router.post("/lists/:listId/items", createItem);
-router.put("/lists/:listId/items/:itemId", updateItem);
-router.delete("/lists/:listId/items/:itemId", deleteItem);
+/**
+ * @todo add verifyToken and check if user has rights to contribute to the workspace
+ */
+router.get("/workspaces/:workspaceId/items", getItems);
+router.post("/workspaces/:workspaceId/items", createItem);
+router.put("/workspaces/:workspaceId/items/:itemId", updateItem);
+router.delete("/workspaces/:workspaceId/items/:itemId", deleteItem);
 
 // -----------------------------------------
 // LISTS
@@ -53,5 +70,20 @@ router.get("/lists-guest", verifyToken, getGuestLists);
 router.post("/lists", verifyToken, createList);
 router.put("/lists/:listId", verifyToken, updateList);
 router.delete("/lists/:listId", deleteList);
+
+// -----------------------------------------
+// CATEGORIES
+router.get("/categories", getCategories);
+router.post("/categories", createCategory);
+router.put("/categories/:categoriesId", updateCategory);
+router.delete("/categories/:categoriesId", deleteCategory);
+
+// -----------------------------------------
+// WORKSPACE
+router.get("/workspaces", verifyToken, getWorkspaces);
+router.get("/workspaces-guest", verifyToken, getUserWorkspaces);
+router.post("/workspaces", verifyToken, createWorkspace);
+router.put("/workspaces/:workspaceId", verifyToken, updateWorkspace);
+router.delete("/workspaces/:workspaceId", deleteWorkspace);
 
 export default router;

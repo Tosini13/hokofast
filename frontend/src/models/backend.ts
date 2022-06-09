@@ -8,7 +8,7 @@ export type TList = {
 
 export type TUser = {
   id: Id;
-  nickname?: string;
+  nickname: string;
   email: string;
   password: string;
   token: string;

@@ -7,7 +7,7 @@ import {
 
 type TSignUpForm = {
   email: string;
-  nickname?: string;
+  nickname: string;
   password: string;
   repeatPassword: string;
 };

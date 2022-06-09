@@ -6,6 +6,7 @@ import { signUp, TSignUpParams } from "../models/api/signup";
 import { isLoggedIn } from "../models/api/isLoggedIn";
 import { EIsLoggedIn } from "../models/backend";
 import { LOGIN_API_URL } from "../models/endpoints";
+import { Id } from "../types/utils";
 
 type TAuthFunc = {
   successCallBack?: () => void;
@@ -17,6 +18,7 @@ export type TSignUpStoreParams = TSignUpParams & TAuthFunc;
 
 class Auth {
   isLoggedIn: boolean | undefined;
+  userId: Id | null;
 
   setAxiosHeaders(AUTH_TOKEN: string) {
     axios.defaults.headers.common["x-access-token"] = AUTH_TOKEN;
@@ -27,6 +29,7 @@ class Auth {
 
     if (!token) {
       this.isLoggedIn = false;
+      this.userId = null;
       return;
     }
 
@@ -35,11 +38,14 @@ class Auth {
       this.setAxiosHeaders(token);
       if (res.data.message === EIsLoggedIn.LOGGED_IN) {
         this.isLoggedIn = true;
+        this.userId = res.data.userId;
       } else {
         this.isLoggedIn = false;
+        this.userId = null;
       }
     } catch (e) {
       this.isLoggedIn = false;
+      this.userId = null;
     }
   }
 
@@ -50,12 +56,14 @@ class Auth {
         this.setAxiosHeaders(res.data.token);
         localStorage.setItem("token", res.data.token);
         this.isLoggedIn = true;
+        this.userId = res.data.id;
       }
     } catch (e) {
       console.error("e", e);
       if (failureCallBack)
         failureCallBack(`URL: ${LOGIN_API_URL} ZLE: ${JSON.stringify(e)}`);
       this.isLoggedIn = false;
+      this.userId = null;
     }
   }
 
@@ -76,6 +84,7 @@ class Auth {
       console.error("e", e);
       if (failureCallBack) failureCallBack();
       this.isLoggedIn = false;
+      this.userId = null;
     }
   }
 
@@ -83,6 +92,7 @@ class Auth {
     this.setAxiosHeaders("");
     localStorage.removeItem("token");
     this.isLoggedIn = false;
+    this.userId = null;
     if (successCallBack) {
       successCallBack();
     }
@@ -91,11 +101,14 @@ class Auth {
   constructor() {
     makeObservable(this, {
       isLoggedIn: observable,
+      userId: observable,
       check: action,
       logIn: action,
       logOut: action,
+      signUp: action,
     });
     this.check();
+    this.userId = null;
   }
 }
 

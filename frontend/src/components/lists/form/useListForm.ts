@@ -2,10 +2,21 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toPath } from "../../../routing/paths";
 import { addList } from "../../../services/lists/lists-service";
+import { Id } from "../../../types/utils";
+import { TWorkspace } from "../../../types/workspaces";
 import useAsync from "../../../utils/useAsync";
 
-type TListForm = {
+type TMockCategory = {
+  id: Id;
   name: string;
+};
+
+export type TListForm = {
+  name: string;
+  workspace: TWorkspace | null;
+  searchWorkspace: string;
+  category: TMockCategory | null;
+  searchCategory: string;
 };
 
 export const useListForm = () => {
@@ -15,6 +26,10 @@ export const useListForm = () => {
   const { handleSubmit, control } = useForm<TListForm>({
     defaultValues: {
       name: "",
+      workspace: null,
+      searchWorkspace: "",
+      category: null,
+      searchCategory: "",
     },
   });
 

@@ -48,15 +48,17 @@ const BoxStyled = styled(Box)`
 `;
 
 type TItemProps = {
-  listId: Id;
+  workspaceId: Id;
   item: TItem;
 };
 
-const Item: React.FC<TItemProps> = ({ item, listId }) => {
+const Item: React.FC<TItemProps> = ({ item, workspaceId }) => {
   return (
     <Container
       variant={"outlined"}
-      onClick={() => editItem(listId, item.id, { ...item, taken: !item.taken })}
+      onClick={() =>
+        editItem(workspaceId, item.id, { ...item, taken: !item.taken })
+      }
       highlited={item.taken}
     >
       <Stack direction={"row"} alignItems="center" spacing={1}>
@@ -69,7 +71,7 @@ const Item: React.FC<TItemProps> = ({ item, listId }) => {
         <TakenIcon taken={item.taken}>
           <ShoppingCart />
         </TakenIcon>
-        <IconButton onClick={() => deleteItem(item.list, item.id)}>
+        <IconButton onClick={() => deleteItem(item.workspace, item.id)}>
           <Remove />
         </IconButton>
       </Stack>

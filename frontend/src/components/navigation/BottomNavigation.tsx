@@ -1,3 +1,4 @@
+import { useContext, useMemo } from "react";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -7,34 +8,44 @@ import {
 import GroupsIcon from "@mui/icons-material/Groups";
 import HomeIcon from "@mui/icons-material/Home";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
-import { EPath } from "../../routing/paths";
+import {
+  matchPath,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import { EPath, toPath } from "../../routing/paths";
+import { Id } from "../../types/utils";
+import { observer } from "mobx-react";
+import { AuthStoreContext } from "../../stores/authStore";
+import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
 
-const getNavValue = (location: string) => {
+const countNavValue = (workspaceId: Id) => (location: string) => {
   if (matchPath(location, EPath.colaboration)) {
     return 0;
   }
   if (matchPath(location, EPath.home)) {
     return 1;
   }
-  if (matchPath(location, EPath.addList)) {
+  if (matchPath(location, toPath.addItem(workspaceId))) {
     return 2;
   }
   return -1;
 };
 
-const useNavNavigate = (navigate: (path: string) => void) => {
-  return (value: number) => {
-    switch (value) {
-      case 0:
-        return navigate(EPath.colaboration);
-      case 2:
-        return navigate(EPath.addList);
-      default:
-        return navigate(EPath.home);
-    }
+const useNavNavigate =
+  (workspaceId: Id) => (navigate: (path: string) => void) => {
+    return (value: number) => {
+      switch (value) {
+        case 0:
+          return navigate(EPath.colaboration);
+        case 2:
+          return navigate(toPath.addItem(workspaceId));
+        default:
+          return navigate(EPath.home);
+      }
+    };
   };
-};
 
 const BoxStyled = styled(Box)`
   position: fixed;
@@ -50,10 +61,31 @@ const BottomNavigationStyled = styled(BottomNavigation)`
 `;
 type TBottomNavProps = {};
 
-const BottomNav: React.FC<TBottomNavProps> = () => {
+const BottomNav: React.FC<TBottomNavProps> = observer(() => {
+  const authStore = useContext(AuthStoreContext);
+  const { workspaces, isProcessing } = useWorkspacesService();
+  const userWorkspaceId = workspaces.find(
+    (workspace) => workspace.author === authStore.userId
+  )?.id;
+  const params = useParams<{ workspaceId: Id }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const navNavigate = useNavNavigate(navigate);
+  const navNavigate = useNavNavigate(
+    params.workspaceId ?? (userWorkspaceId as Id)
+  )(navigate);
+
+  const isAddItemActive = useMemo(
+    () => !isProcessing && (params.workspaceId || userWorkspaceId),
+    [isProcessing, params.workspaceId, userWorkspaceId]
+  );
+
+  /**
+   * @todo can I use useMemo for function?
+   */
+  const getNavValue = useMemo(
+    () => countNavValue(params.workspaceId as Id),
+    [params.workspaceId]
+  );
 
   return (
     <BoxStyled>
@@ -72,12 +104,13 @@ const BottomNav: React.FC<TBottomNavProps> = () => {
         />
         <BottomNavigationAction label="Home" icon={<HomeIcon />} />
         <BottomNavigationAction
-          label="Add List"
+          label="Add Item"
           icon={<AddShoppingCartIcon />}
+          disabled={!isAddItemActive}
         />
       </BottomNavigationStyled>
     </BoxStyled>
   );
-};
+});
 
 export default BottomNav;

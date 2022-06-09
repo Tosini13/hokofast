@@ -1,25 +1,48 @@
 import { useForm } from "react-hook-form";
 import { createItem } from "../../../services/items/item-service";
+import { Id } from "../../../types/utils";
+import { TWorkspace } from "../../../types/workspaces";
 import useAsync from "../../../utils/useAsync";
 
-type TItemForm = {
+type TMockCategory = {
+  id: Id;
   name: string;
-  amount: string;
 };
 
-export const useItemForm = (listId: string) => {
+export type TItemForm = {
+  name: string;
+  workspace: TWorkspace;
+  searchWorkspace: string;
+  category: TMockCategory | null;
+  searchCategory: string;
+};
+
+type TUseItemForm = {
+  workspace: TWorkspace;
+};
+
+export const useItemForm = ({ workspace }: TUseItemForm) => {
   const { isProcessing, execute } = useAsync();
 
-  const { handleSubmit, control, reset } = useForm<TItemForm>({
+  const { handleSubmit, control } = useForm<TItemForm>({
     defaultValues: {
       name: "",
+      workspace,
+      searchWorkspace: "",
+      category: null,
+      searchCategory: "",
     },
   });
 
   const onSubmit = async (data: TItemForm) => {
     try {
-      await execute(createItem(listId, { name: data.name }));
-      reset();
+      const res = await execute(
+        createItem(data.workspace.id, {
+          name: data.name,
+          category: data.category?.id,
+        })
+      );
+      console.log("res", res);
     } catch (e) {
       console.error(e);
     }

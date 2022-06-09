@@ -1,13 +1,22 @@
-import { Button, Stack, useTheme } from "@mui/material";
+import { Button, Stack, Typography, useTheme } from "@mui/material";
 import TextField from "../controlled/TextField";
-import { useListForm } from "./form/useListForm";
+import { TListForm, useListForm } from "./form/useListForm";
 import { Send } from "@mui/icons-material";
 import { LoadingIcon } from "../utils/Loading";
+import Autocomplete from "../controlled/Autocomplete";
+import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
+import { useCategoriesService } from "../../services/categories/categories-service";
 
 type TListFormProps = {};
 
 const ListForm: React.FC<TListFormProps> = () => {
   const { handleSubmit, control, isProcessing } = useListForm();
+
+  const { isProcessing: isProcessingSearch, workspaces } =
+    useWorkspacesService();
+
+  const { isProcessing: isProcessingCategories, categories } =
+    useCategoriesService();
 
   const theme = useTheme();
   return (
@@ -24,13 +33,76 @@ const ListForm: React.FC<TListFormProps> = () => {
         style={{
           position: "relative",
           zIndex: 1,
+          maxWidth: "250px",
+          margin: "auto",
         }}
       >
         <TextField
+          fullWidth
           name="name"
-          placeholder={"List name"}
+          placeholder={"Product name"}
           control={control}
           style={{ textAlign: "center", alignSelf: "center" }}
+        />
+
+        <Autocomplete<TListForm, TListForm["workspace"], boolean>
+          name="workspace"
+          control={control}
+          size="small"
+          loading={isProcessingSearch}
+          options={workspaces}
+          getOptionLabel={(option) => option?.name ?? ""}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
+          renderOption={(props, option) => {
+            if (!option) {
+              return null;
+            }
+            return (
+              <li {...props} key={option.id}>
+                <Typography>{option.name}</Typography>
+              </li>
+            );
+          }}
+          textFieldProps={{
+            name: "searchWorkspace",
+            placeholder: "Workspace",
+            control: control,
+            fullWidth: true,
+            style: {
+              textAlign: "center",
+              alignSelf: "center",
+            },
+          }}
+        />
+
+        <Autocomplete<TListForm, TListForm["category"], boolean>
+          name="category"
+          control={control}
+          size="small"
+          loading={isProcessingCategories}
+          options={categories}
+          getOptionLabel={(option) => option?.name ?? ""}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
+          renderOption={(props, option) => {
+            if (!option) {
+              return null;
+            }
+            return (
+              <li {...props} key={option.id}>
+                <Typography>{option.name}</Typography>
+              </li>
+            );
+          }}
+          textFieldProps={{
+            name: "searchCategory",
+            placeholder: "Category",
+            control: control,
+            fullWidth: true,
+            style: {
+              textAlign: "center",
+              alignSelf: "center",
+            },
+          }}
         />
 
         <Button

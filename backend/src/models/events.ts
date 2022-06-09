@@ -5,6 +5,12 @@ export enum EEvents {
   createdList = "CREATED_LIST",
   updatedList = "UPDATED_LIST",
   deletedList = "DELETED_LIST",
+  createdWorkspace = "CREATED_WORKSPACE",
+  updatedWorkspace = "UPDATED_WORKSPACE",
+  deletedWorkspace = "DELETED_WORKSPACE",
+  createdCategory = "CREATED_CATEGORY",
+  updatedCategory = "UPDATED_CATEGORY",
+  deletedCategory = "DELETED_CATEGORY",
 }
 
 export type TEventBody<TData, TParams = void> = {
