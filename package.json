@@ -9,7 +9,7 @@
     "dev": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && set PORT=3001 && npm run start",
     "build:backend": "cd backend && npm run build",
-    "build:frontend": "cd frontend && npm install && npm run build",
+    "build:frontend": "cd frontend && npm install --save --legacy-peer-deps && npm run build",
     "build": "npm run build:frontend && npm run build:backend",
     "postinstall": "npm run build",
     "test": "react-scripts test",
