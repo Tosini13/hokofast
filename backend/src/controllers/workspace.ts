@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { LeanDocument } from "mongoose";
 import { io } from "..";
 import { IVerifyTokenRequest } from "../middleware/auth";
-import { EEvents } from "../models/events";
+import { EEvents, TEventBody } from "../models/events";
 import { EGetUser } from "../models/messages/users";
 import Workspace, {
   IWorkspace,
@@ -101,7 +101,10 @@ export const createWorkspace = async (
     const newWorkspace = await Workspace.create(workspaceData);
     const workspace = convertWorkspace(newWorkspace);
 
-    io.emit(EEvents.createdWorkspace, workspace);
+    const emitBody: TEventBody<TWorkspace> = {
+      data: workspace,
+    };
+    io.emit(EEvents.createdWorkspace, emitBody);
     res.send(workspace);
   } catch (e) {
     console.error(e);
@@ -121,7 +124,10 @@ export const updateWorkspace = async (
 
   try {
     await Workspace.updateOne({ _id: req.params.workspaceId }, workspace);
-    io.emit(EEvents.updatedWorkspace, workspace);
+    const emitBody: TEventBody<TWorkspace> = {
+      data: workspace,
+    };
+    io.emit(EEvents.updatedWorkspace, emitBody);
     res.send(workspace);
   } catch (e) {
     console.error(e);
@@ -134,7 +140,10 @@ export const deleteWorkspace = async (req: Request, res: Response) => {
       _id: req.params.workspaceId,
     });
     const workspace = convertWorkspace(deletedWorkspace);
-    io.emit(EEvents.deletedWorkspace, workspace);
+    const emitBody: TEventBody<TWorkspace> = {
+      data: workspace,
+    };
+    io.emit(EEvents.deletedWorkspace, emitBody);
     res.send(workspace);
   } catch (e) {
     console.error(e);

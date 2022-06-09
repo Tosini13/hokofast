@@ -1,7 +1,8 @@
 import { Drawer, Stack } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
+import { AuthStoreContext } from "../../stores/authStore";
 import { Id } from "../../types/utils";
 import Loading from "../utils/Loading";
 import DeleteWorkspace from "../workspaces/sidebar/delete/DeleteWorkspace";
@@ -17,12 +18,18 @@ const DrawerNavigation: React.FC<TDrawerNavigationProps> = ({
   onClose,
 }) => {
   const { pathname } = useLocation();
+  const authStore = useContext(AuthStoreContext);
   const params = useParams<{ workspaceId?: Id }>();
   const { workspaces, isProcessing } = useWorkspacesService();
 
   const workspace = useMemo(
-    () => workspaces.find((workspace) => workspace.id === params.workspaceId),
-    [params.workspaceId, workspaces]
+    () =>
+      workspaces.find((workspace) =>
+        params.workspaceId
+          ? workspace.id === params.workspaceId
+          : workspace.author === authStore.userId
+      ),
+    [params.workspaceId, workspaces, authStore.userId]
   );
 
   useEffect(() => {
