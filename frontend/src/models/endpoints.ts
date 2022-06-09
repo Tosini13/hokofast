@@ -5,9 +5,10 @@ export const SERVER_URL = process.env.REACT_APP_SERVER_DOMAIN as string;
 
 const API_URL = `${SERVER_URL}/api`;
 
-export const ITEMS_API_URL = (listId: Id) => `${API_URL}/lists/${listId}/items`;
-export const ITEM_API_URL = (listId: Id, itemId: Id) =>
-  `${API_URL}/lists/${listId}/items/${itemId}`;
+export const ITEMS_API_URL = (workspaceId: Id) =>
+  `${API_URL}/workspaces/${workspaceId}/items`;
+export const ITEM_API_URL = (workspaceId: Id, itemId: Id) =>
+  `${API_URL}/workspaces/${workspaceId}/items/${itemId}`;
 
 export const LISTS_API_URL = `${API_URL}/lists`;
 export const LISTS_GUEST_API_URL = `${API_URL}/lists-guest`;

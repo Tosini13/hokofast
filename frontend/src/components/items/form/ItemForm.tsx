@@ -1,16 +1,21 @@
 import { Button, Stack, Typography, useTheme } from "@mui/material";
-import TextField from "../controlled/TextField";
-import { TListForm, useListForm } from "./form/useListForm";
+import TextField from "../../controlled/TextField";
 import { Send } from "@mui/icons-material";
-import { LoadingIcon } from "../utils/Loading";
-import Autocomplete from "../controlled/Autocomplete";
-import { useWorkspacesService } from "../../services/workspaces/workspaces-service";
-import { useCategoriesService } from "../../services/categories/categories-service";
+import { LoadingIcon } from "../../utils/Loading";
+import Autocomplete from "../../controlled/Autocomplete";
+import { useWorkspacesService } from "../../../services/workspaces/workspaces-service";
+import { useCategoriesService } from "../../../services/categories/categories-service";
+import { TItemForm, useItemForm } from "./useItemForm";
+import { TWorkspace } from "../../../types/workspaces";
 
-type TListFormProps = {};
+type TItemFormProps = {
+  workspace: TWorkspace;
+};
 
-const ListForm: React.FC<TListFormProps> = () => {
-  const { handleSubmit, control, isProcessing } = useListForm();
+const ItemForm: React.FC<TItemFormProps> = ({ workspace }) => {
+  const { handleSubmit, control, isProcessing } = useItemForm({
+    workspace,
+  });
 
   const { isProcessing: isProcessingSearch, workspaces } =
     useWorkspacesService();
@@ -40,12 +45,12 @@ const ListForm: React.FC<TListFormProps> = () => {
         <TextField
           fullWidth
           name="name"
-          placeholder={"Product name"}
+          placeholder={"Item name"}
           control={control}
           style={{ textAlign: "center", alignSelf: "center" }}
         />
 
-        <Autocomplete<TListForm, TListForm["workspace"], boolean>
+        <Autocomplete<TItemForm, TItemForm["workspace"], boolean>
           name="workspace"
           control={control}
           size="small"
@@ -75,7 +80,7 @@ const ListForm: React.FC<TListFormProps> = () => {
           }}
         />
 
-        <Autocomplete<TListForm, TListForm["category"], boolean>
+        <Autocomplete<TItemForm, TItemForm["category"], boolean>
           name="category"
           control={control}
           size="small"
@@ -128,4 +133,4 @@ const ListForm: React.FC<TListFormProps> = () => {
   );
 };
 
-export default ListForm;
+export default ItemForm;

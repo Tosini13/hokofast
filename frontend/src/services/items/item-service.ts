@@ -62,16 +62,16 @@ export const useItemsService = (workspaceId: Id) => {
 };
 
 export const createItem = async (
-  listId: string,
-  data: Omit<TItem, "id" | "list" | "taken">
-) => await axios.post(ITEMS_API_URL(listId), data);
+  workspaceId: string,
+  data: Omit<TItem, "id" | "workspace" | "taken">
+) => await axios.post(ITEMS_API_URL(workspaceId), data);
 
 export const editItem = async (
-  listId: string,
+  workspaceId: string,
   itemId: Id,
-  data: Omit<TItem, "id" | "list">
-) => await axios.put(ITEM_API_URL(listId, itemId), data);
+  data: Omit<TItem, "id" | "workspace">
+) => await axios.put(ITEM_API_URL(workspaceId, itemId), data);
 
-export const deleteItem = async (listId: string, itemId: Id) => {
-  await axios.delete(ITEM_API_URL(listId, itemId));
+export const deleteItem = async (workspaceId: string, itemId: Id) => {
+  await axios.delete(ITEM_API_URL(workspaceId, itemId));
 };

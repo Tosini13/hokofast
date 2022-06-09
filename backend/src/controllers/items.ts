@@ -47,9 +47,9 @@ export const getItems = async (req: Request, res: Response) => {
 
 export const createItem = async (req: Request, res: Response) => {
   const itemData = getItemFromBody({ ...req.body, taken: false }, req.params);
-  const ifListExists = await checkIfWorkspaceExists(itemData.workspace);
+  const ifWorkspaceExists = await checkIfWorkspaceExists(itemData.workspace);
 
-  if (!ifListExists) {
+  if (!ifWorkspaceExists) {
     res.send(sendMessage("NO_WORKSPACE_FOUND"));
     return;
   }
