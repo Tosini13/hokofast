@@ -25,10 +25,14 @@ const WorkspacePage: React.FC<TWorkspacePageProps> = observer(() => {
   const params = useParams<{ workspaceId: Id }>();
   const { workspaces } = useWorkspacesService();
 
-  const workspace = workspaces.find((workspace) =>
-    params.workspaceId
-      ? workspace.id === params.workspaceId
-      : workspace.author === authStore.userId
+  const workspace = useMemo(
+    () =>
+      workspaces.find((workspace) =>
+        params.workspaceId
+          ? workspace.id === params.workspaceId
+          : workspace.author === authStore.userId
+      ),
+    [params.workspaceId, workspaces, authStore.userId]
   );
 
   const headerContent = useMemo(

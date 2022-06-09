@@ -1,10 +1,12 @@
 import { Box, styled } from "@mui/material";
 
 const BoxStyled = styled(Box)<{ active?: boolean }>`
+  margin: 0px 6px;
+  border-radius: 10px;
   ${(props) =>
     props.active
       ? `
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(3,3,3,0.15);
     `
       : ""}
 `;
