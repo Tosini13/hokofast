@@ -59,7 +59,6 @@ export const useWorkspacesService = () => {
     );
   }, [socket]);
 
-  console.log("workspaces", workspaces);
   /**
    * @todo add activeWorkspace
    */

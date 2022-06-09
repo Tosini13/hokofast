@@ -5,19 +5,19 @@ import { TUserAPIQuery, USERS_API_URL } from "../../models/endpoints";
 import useAsync from "../../utils/useAsync";
 
 export const getUsers = (props: TUserAPIQuery) =>
-  axios.get<{ data: TUser[] }>(USERS_API_URL(props)).then((data) => data.data);
+  axios.get<TUser[]>(USERS_API_URL(props)).then((data) => data.data);
 
-export const useUsersService = (props: TUserAPIQuery) => {
+export const useUsersService = ({ nickname }: TUserAPIQuery) => {
   const [users, setUsers] = useState<TUser[]>([]);
   const { execute, isProcessing } = useAsync();
 
   useEffect(() => {
     async function fetchData() {
-      const users = await execute(getUsers(props));
-      setUsers(users.data);
+      const users = await execute(getUsers({ nickname }));
+      setUsers(users);
     }
     fetchData();
-  }, [execute, props]);
+  }, [execute, nickname]);
 
   return { users, isProcessing };
 };
