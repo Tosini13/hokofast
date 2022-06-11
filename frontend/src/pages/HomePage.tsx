@@ -6,8 +6,11 @@ import HomeHeader from "../components/header/HomeHeader";
 import MainHeader from "../components/header/MainHeader";
 import MainStack from "../components/layout/MainStack";
 import BottomNav from "../components/navigation/BottomNavigation";
+import Loading from "../components/utils/Loading";
+import WorkspacesList from "../components/workspaces/list/WorkspacesList";
 import { EPath } from "../routing/paths";
 import { useUsersService } from "../services/users/users.service";
+import { useWorkspacesService } from "../services/workspaces/workspaces-service";
 import { AuthStoreContext } from "../stores/authStore";
 
 const StackContainer = styled(Stack)`
@@ -22,6 +25,7 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
   const navigate = useNavigate();
   const authStore = useContext(AuthStoreContext);
   const { users } = useUsersService({});
+  const { workspaces, isProcessing } = useWorkspacesService();
 
   const headerContent = useMemo(
     () => (
@@ -41,6 +45,11 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
     <MainStack>
       <MainHeader content={headerContent} />
       <StackContainer spacing={3}>
+        {isProcessing ? (
+          <Loading />
+        ) : (
+          <WorkspacesList workspaces={workspaces} />
+        )}
         <Button onClick={goToAddWorkspace}>Add workspace</Button>
       </StackContainer>
       <BottomNav />
