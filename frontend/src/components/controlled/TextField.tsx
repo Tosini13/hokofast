@@ -23,7 +23,10 @@ const TextFieldPrimaryStyled = styled(TextFieldStyled)`
   border-radius: 8px;
   background-color: white;
   box-shadow: 0px 2px 5px 0px rgb(0 0 0 / 40%);
-  padding: 2px 8px;
+  input {
+    padding: 6px 8px !important;
+    font-size: 18px;
+  }
 `;
 
 const VisibilityIconStyled = styled(VisibilityIcon)`

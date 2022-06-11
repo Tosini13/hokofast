@@ -24,7 +24,7 @@ type TUseItemForm = {
 export const useItemForm = ({ workspace }: TUseItemForm) => {
   const { isProcessing, execute } = useAsync();
 
-  const { handleSubmit, control } = useForm<TItemForm>({
+  const { handleSubmit, control, reset } = useForm<TItemForm>({
     defaultValues: {
       name: "",
       workspace,
@@ -42,6 +42,7 @@ export const useItemForm = ({ workspace }: TUseItemForm) => {
           category: data.category?.id,
         })
       );
+      reset();
       console.log("res", res);
     } catch (e) {
       console.error(e);

@@ -36,7 +36,7 @@ const WorkspacePage: React.FC<TWorkspacePageProps> = observer(() => {
   );
 
   const headerContent = useMemo(
-    () => <WorkspaceHeader workspaceName={workspace?.name} />,
+    () => <WorkspaceHeader workspace={workspace} />,
     [workspace]
   );
 
