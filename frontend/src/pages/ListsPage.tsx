@@ -1,7 +1,6 @@
 import { Stack, styled } from "@mui/material";
 import { useMemo } from "react";
 import MainHeader from "../components/header/MainHeader";
-import WorkspaceHeader from "../components/header/WorkspaceHeader";
 import DividerTitle from "../components/layout/DividerTitle";
 import MainStack from "../components/layout/MainStack";
 import Lists from "../components/lists/Lists";
@@ -22,10 +21,7 @@ type TListsPageProps = {};
 const ListsPage: React.FC<TListsPageProps> = () => {
   const { myLists, guestLists } = useListsService();
 
-  const headerContent = useMemo(
-    () => <WorkspaceHeader workspaceName={myLists && myLists[0].name} />,
-    [myLists]
-  );
+  const headerContent = useMemo(() => <p>No Header</p>, []);
 
   return (
     <MainStack>

@@ -17,7 +17,7 @@ const PaperContainer = styled(PaperStyled)<{ highlited?: boolean }>`
   transition: box-shadow 0.3s;
   padding: 7px 15px !important;
   ${(props) =>
-    props.highlited ? `box-shadow: -1px 1px 3px -1px rgb(0 0 0 / 70%);` : ""}
+    !props.highlited ? `box-shadow: -1px 1px 3px -1px rgb(0 0 0 / 70%);` : ""}
 `;
 
 type TItemContainerProps = PaperProps & {
