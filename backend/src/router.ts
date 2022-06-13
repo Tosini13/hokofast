@@ -16,6 +16,7 @@ import {
 import {
   createItem,
   deleteItem,
+  getAllItems,
   getItems,
   updateItem,
 } from "./controllers/items";
@@ -58,10 +59,15 @@ router.put("/user/:id", verifyToken, updateUser);
 /**
  * @todo add verifyToken and check if user has rights to contribute to the workspace
  */
-router.get("/workspaces/:workspaceId/items", getItems);
-router.post("/workspaces/:workspaceId/items", createItem);
-router.put("/workspaces/:workspaceId/items/:itemId", updateItem);
-router.delete("/workspaces/:workspaceId/items/:itemId", deleteItem);
+router.get("/items", verifyToken, getAllItems);
+router.get("/workspaces/:workspaceId/items", verifyToken, getItems);
+router.post("/workspaces/:workspaceId/items", verifyToken, createItem);
+router.put("/workspaces/:workspaceId/items/:itemId", verifyToken, updateItem);
+router.delete(
+  "/workspaces/:workspaceId/items/:itemId",
+  verifyToken,
+  deleteItem
+);
 
 // -----------------------------------------
 // LISTS
