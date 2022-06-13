@@ -14,8 +14,8 @@ export const ALL_ITEMS_API_URL = ({
   workspaceId,
   categoryId,
 }: TALL_ITEMS_API_URLProps) =>
-  `${API_URL}/items?${workspaceId ? `workspaceId=workspaceId&` : ""}${
-    categoryId ? `categoryId=categoryId&` : ""
+  `${API_URL}/items?${workspaceId ? `workspaceId=${workspaceId}&` : ""}${
+    categoryId ? `categoryId=${categoryId}&` : ""
   }`;
 export const ITEMS_API_URL = (workspaceId: Id) =>
   `${API_URL}/workspaces/${workspaceId}/items`;

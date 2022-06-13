@@ -28,14 +28,24 @@ const getAllItems =
       .get<TItem[]>(ALL_ITEMS_API_URL({ workspaceId, categoryId }))
       .then((data) => data.data);
 
-export const useItemsService = (workspaceId: Id) => {
+type TUseItemsServiceProps = {
+  workspaceId?: Id;
+  categoryId?: Id;
+};
+
+export const useItemsService = ({
+  workspaceId,
+  categoryId,
+}: TUseItemsServiceProps) => {
   const [items, setItems] = useState<TItem[]>();
 
   const socket = useMemo(() => socketIOClient(SERVER_URL), []);
 
   useEffect(() => {
     const queryClient = new QueryClient();
-    queryClient.setQueryDefaults("items", { queryFn: getItems(workspaceId) });
+    queryClient.setQueryDefaults("items", {
+      queryFn: getAllItems({ workspaceId, categoryId }),
+    });
     const observer = new QueryObserver<TItem[]>(queryClient, {
       queryKey: "items",
     });
@@ -43,7 +53,7 @@ export const useItemsService = (workspaceId: Id) => {
     observer.subscribe((res) => {
       setItems(res.data);
     });
-  }, [workspaceId]);
+  }, [workspaceId, categoryId]);
 
   useEffect(() => {
     socket.on(EEvents.createdItem, (data: TEventBody<TItem, TEventParams>) => {
@@ -55,21 +65,27 @@ export const useItemsService = (workspaceId: Id) => {
 
   useEffect(() => {
     socket.on(EEvents.updatedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.workspaceId === workspaceId) {
+      if (
+        (workspaceId && data.params?.workspaceId === workspaceId) ||
+        items?.map((i) => i.id).includes(data.data.id)
+      ) {
         setItems((prev) =>
           prev?.map((item) => (item.id === data.data.id ? data.data : item))
         );
       }
     });
-  }, [socket, workspaceId]);
+  }, [socket, workspaceId, categoryId, items]);
 
   useEffect(() => {
     socket.on(EEvents.deletedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.workspaceId === workspaceId) {
+      if (
+        (workspaceId && data.params?.workspaceId === workspaceId) ||
+        items?.map((i) => i.id).includes(data.data.id)
+      ) {
         setItems((prev) => prev?.filter((item) => item.id !== data.data.id));
       }
     });
-  }, [socket, workspaceId]);
+  }, [socket, workspaceId, categoryId, items]);
 
   return items;
 };

@@ -1,6 +1,6 @@
 import { Skeleton, Stack, styled, Typography } from "@mui/material";
-import Search from "./Search";
-import { useSearchForm } from "./searchForm/useSearchForm";
+import { Id } from "../../types/utils";
+import HomeHeaderForm from "./homeHeader/HomeHeaderForm";
 
 const StackStyled = styled(Stack)`
   position: absolute;
@@ -12,10 +12,10 @@ const StackStyled = styled(Stack)`
 
 type THomeHeaderProps = {
   nickname?: string;
+  setCategory: (category: Id | undefined | null) => void;
 };
 
-const HomeHeader: React.FC<THomeHeaderProps> = ({ nickname }) => {
-  const { handleSubmit, control } = useSearchForm();
+const HomeHeader: React.FC<THomeHeaderProps> = ({ nickname, setCategory }) => {
   return (
     <>
       <StackStyled spacing={0}>
@@ -35,13 +35,7 @@ const HomeHeader: React.FC<THomeHeaderProps> = ({ nickname }) => {
           <Skeleton height={32} width={100} />
         )}
       </StackStyled>
-      <form onSubmit={handleSubmit}>
-        <Search
-          name={"search"}
-          control={control}
-          placeholder={"Find list..."}
-        />
-      </form>
+      <HomeHeaderForm setCategory={setCategory} />
     </>
   );
 };
