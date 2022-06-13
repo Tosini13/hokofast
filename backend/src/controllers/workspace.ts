@@ -51,7 +51,9 @@ export const getWorkspaces = async (
   try {
     const workspacesForUser = await getWorkspacesForUser(currentUser.user_id);
     res.send({
-      data: [workspacesForUser],
+      data: workspacesForUser.map((workspace) =>
+        convertUsersWorkspace(workspace)
+      ),
     });
   } catch (e) {
     console.error(e);
