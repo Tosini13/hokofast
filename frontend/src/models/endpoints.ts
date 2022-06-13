@@ -5,6 +5,18 @@ export const SERVER_URL = process.env.REACT_APP_SERVER_DOMAIN as string;
 
 const API_URL = `${SERVER_URL}/api`;
 
+type TALL_ITEMS_API_URLProps = {
+  workspaceId?: Id;
+  categoryId?: Id;
+};
+
+export const ALL_ITEMS_API_URL = ({
+  workspaceId,
+  categoryId,
+}: TALL_ITEMS_API_URLProps) =>
+  `${API_URL}/items?${workspaceId ? `workspaceId=workspaceId&` : ""}${
+    categoryId ? `categoryId=categoryId&` : ""
+  }`;
 export const ITEMS_API_URL = (workspaceId: Id) =>
   `${API_URL}/workspaces/${workspaceId}/items`;
 export const ITEM_API_URL = (workspaceId: Id, itemId: Id) =>

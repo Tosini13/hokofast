@@ -2,7 +2,6 @@ import React from "react";
 import { Stack, styled } from "@mui/material";
 import { TItem } from "../../types/items";
 import Item from "./Item";
-import { Id } from "../../types/utils";
 
 const StackContainer = styled(Stack)`
   flex-grow: 1;
@@ -12,21 +11,15 @@ const StackContainer = styled(Stack)`
 `;
 
 type TItemsListProps = {
-  workspaceId: Id;
   items: TItem[];
-  isLower?: boolean;
 };
 
-const ItemsList: React.FC<TItemsListProps> = ({
-  workspaceId,
-  items,
-  isLower,
-}) => {
+const ItemsList: React.FC<TItemsListProps> = ({ items }) => {
   return (
     <>
       <StackContainer spacing={1}>
         {items.map((item) => (
-          <Item key={item.id} item={item} workspaceId={workspaceId} />
+          <Item key={item.id} item={item} />
         ))}
       </StackContainer>
     </>

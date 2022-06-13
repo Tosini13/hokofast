@@ -26,6 +26,7 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
   const authStore = useContext(AuthStoreContext);
   const { users } = useUsersService({});
   const { workspaces, isProcessing } = useWorkspacesService();
+  console.log("workspaces", workspaces);
 
   const headerContent = useMemo(
     () => (

@@ -35,7 +35,7 @@ const List: React.FC<TListProps> = ({ listId, isLower }) => {
     <>
       <StackContainer spacing={1} islower={isLower}>
         {items?.map((item) => (
-          <Item key={item.id} item={item} workspaceId={listId} />
+          <Item key={item.id} item={item} />
         ))}
       </StackContainer>
     </>

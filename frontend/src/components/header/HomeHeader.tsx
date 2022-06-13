@@ -1,6 +1,14 @@
-import { Skeleton, Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, styled, Typography } from "@mui/material";
 import Search from "./Search";
 import { useSearchForm } from "./searchForm/useSearchForm";
+
+const StackStyled = styled(Stack)`
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translate(-50%, -12px);
+  max-width: 250px;
+`;
 
 type THomeHeaderProps = {
   nickname?: string;
@@ -10,21 +18,23 @@ const HomeHeader: React.FC<THomeHeaderProps> = ({ nickname }) => {
   const { handleSubmit, control } = useSearchForm();
   return (
     <>
-      <Stack spacing={0}>
-        <Typography color="primary" fontWeight={600}>
+      <StackStyled spacing={0}>
+        <Typography color="primary" align="center" fontWeight={600}>
           Welcome back
         </Typography>
         {nickname ? (
-          <Typography variant="h5" fontWeight={800} color="primary">
+          <Typography
+            variant="h5"
+            align="center"
+            fontWeight={800}
+            color="primary"
+          >
             {nickname}
           </Typography>
         ) : (
           <Skeleton height={32} width={100} />
         )}
-      </Stack>
-      <Typography color="primary" align="center" fontWeight={600}>
-        Are you ready for super fast shopping?
-      </Typography>
+      </StackStyled>
       <form onSubmit={handleSubmit}>
         <Search
           name={"search"}

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, QueryObserver } from "react-query";
 import {
+  ALL_ITEMS_API_URL,
   ITEMS_API_URL,
   ITEM_API_URL,
   SERVER_URL,
@@ -14,6 +15,18 @@ import { EEvents, TEventBody, TEventParams } from "../../types/backend/events";
 
 const getItems = (workspaceId: Id) => () =>
   axios.get<TItem[]>(ITEMS_API_URL(workspaceId)).then((data) => data.data);
+
+type TGetAllItemsProps = {
+  workspaceId?: Id;
+  categoryId?: Id;
+};
+
+const getAllItems =
+  ({ workspaceId, categoryId }: TGetAllItemsProps) =>
+  () =>
+    axios
+      .get<TItem[]>(ALL_ITEMS_API_URL({ workspaceId, categoryId }))
+      .then((data) => data.data);
 
 export const useItemsService = (workspaceId: Id) => {
   const [items, setItems] = useState<TItem[]>();
