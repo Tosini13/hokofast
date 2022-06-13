@@ -24,15 +24,14 @@ const TakenIcon = styled(IconButton)<{ taken: boolean }>`
 `;
 
 type TItemProps = {
-  workspaceId: Id;
   item: TItem;
 };
 
-const Item: React.FC<TItemProps> = ({ item, workspaceId }) => {
+const Item: React.FC<TItemProps> = ({ item }) => {
   return (
     <ItemContainer
       onClick={() =>
-        editItem(workspaceId, item.id, { ...item, taken: !item.taken })
+        editItem(item.workspace, item.id, { ...item, taken: !item.taken })
       }
       highlited={item.taken}
     >

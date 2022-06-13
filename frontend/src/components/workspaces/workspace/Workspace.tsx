@@ -8,16 +8,8 @@ type TWorkspaceProps = {
 };
 
 const Workspace: React.FC<TWorkspaceProps> = ({ workspace }) => {
-  const items = useItemsService(workspace.id);
-  return (
-    <>
-      {items ? (
-        <ItemsList workspaceId={workspace.id} items={items} />
-      ) : (
-        <Loading />
-      )}
-    </>
-  );
+  const items = useItemsService({ workspaceId: workspace.id });
+  return <>{items ? <ItemsList items={items} /> : <Loading />}</>;
 };
 
 export default Workspace;

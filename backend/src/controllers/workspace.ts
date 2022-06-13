@@ -10,6 +10,7 @@ import Workspace, {
   TWorkspace,
   TWorkspaceRes,
 } from "../models/workspace";
+import { getWorkspacesForUser } from "./actions/workspaces";
 import { createError } from "./backend-messages";
 
 const getWorkspaceFromBody = (
@@ -48,23 +49,11 @@ export const getWorkspaces = async (
   }
 
   try {
-    const workspaces = await Workspace.find({
-      author: currentUser.user_id,
-    }).sort({
-      name: 1,
-    });
-
-    const guestWorkspaces = await Workspace.find({
-      users: currentUser.user_id,
-    }).sort({
-      name: 1,
-    });
-    console.log("guestWorkspaces", guestWorkspaces);
+    const workspacesForUser = await getWorkspacesForUser(currentUser.user_id);
     res.send({
-      data: [
-        ...workspaces.map((workspace) => convertWorkspace(workspace)),
-        ...guestWorkspaces.map((workspace) => convertWorkspace(workspace)),
-      ],
+      data: workspacesForUser.map((workspace) =>
+        convertUsersWorkspace(workspace)
+      ),
     });
   } catch (e) {
     console.error(e);

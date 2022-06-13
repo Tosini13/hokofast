@@ -30,12 +30,12 @@ type TListProps = {
 };
 
 const List: React.FC<TListProps> = ({ listId, isLower }) => {
-  const items = useItemsService(listId);
+  const items = useItemsService({ workspaceId: listId });
   return (
     <>
       <StackContainer spacing={1} islower={isLower}>
         {items?.map((item) => (
-          <Item key={item.id} item={item} workspaceId={listId} />
+          <Item key={item.id} item={item} />
         ))}
       </StackContainer>
     </>

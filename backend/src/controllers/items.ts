@@ -1,11 +1,23 @@
 import { Request, Response } from "express";
 import { LeanDocument } from "mongoose";
 import { io } from "..";
+import { IVerifyTokenRequest } from "../middleware/auth";
 import { EEvents, TEventBody } from "../models/events";
 import { TEventParams } from "../models/events/items";
 import Item, { IItem, TItem, TItemRes } from "../models/item";
-import { checkIfWorkspaceExists } from "./actions/workspaces";
-import { sendMessage } from "./backend-messages";
+import { EGetUser } from "../models/messages/users";
+import { Id } from "../models/utils";
+import {
+  getCategoryAndWorkspaceItems,
+  getCategoryItems,
+  getWorkspaceItems,
+  getWorkspacesItems,
+} from "./actions/items";
+import {
+  checkIfUserHasRightsToWorkspace,
+  getWorkspacesForUser,
+} from "./actions/workspaces";
+import { createError, sendMessage } from "./backend-messages";
 
 const getItemFromBody = (
   body: Omit<TItem, "workspaceId">,
@@ -29,6 +41,71 @@ export const convertItem = ({
   taken,
 });
 
+export const getAllItems = async (req: IVerifyTokenRequest, res: Response) => {
+  const currentUser = req.currentUser;
+
+  if (!currentUser) {
+    return res.status(200).send(createError(EGetUser.UNAUTHORIZED));
+  }
+
+  const { workspaceId, categoryId } = req.query as {
+    workspaceId?: Id;
+    categoryId?: Id;
+  };
+
+  try {
+    if (workspaceId && categoryId) {
+      const hasRights = await checkIfUserHasRightsToWorkspace(
+        workspaceId,
+        currentUser.user_id
+      );
+
+      if (!hasRights) {
+        res.send(sendMessage(EGetUser.UNAUTHORIZED));
+        return;
+      }
+
+      const items = await getCategoryAndWorkspaceItems(workspaceId, categoryId);
+      res.send(items.map((item) => convertItem(item)));
+      return;
+    }
+
+    if (workspaceId) {
+      const hasRights = await checkIfUserHasRightsToWorkspace(
+        workspaceId,
+        currentUser.user_id
+      );
+
+      if (!hasRights) {
+        res.send(sendMessage(EGetUser.UNAUTHORIZED));
+        return;
+      }
+
+      const items = await getWorkspaceItems(workspaceId);
+      res.send(items.map((item) => convertItem(item)));
+      return;
+    }
+
+    if (categoryId) {
+      const workspaces = await getWorkspacesForUser(currentUser.user_id);
+      const items = await getCategoryItems(
+        workspaces.map((w) => w._id),
+        categoryId
+      );
+      res.send(items.map((item) => convertItem(item)));
+      return;
+    }
+
+    const workspaces = await getWorkspacesForUser(currentUser.user_id);
+    const items = await getWorkspacesItems(
+      workspaces.map((workspace) => workspace._id)
+    );
+    res.send(items.map((item) => convertItem(item)));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const getItems = async (req: Request, res: Response) => {
   const workspaceId = req.params.workspaceId;
   const categoryId = req.query.category;
@@ -45,12 +122,21 @@ export const getItems = async (req: Request, res: Response) => {
   }
 };
 
-export const createItem = async (req: Request, res: Response) => {
+export const createItem = async (req: IVerifyTokenRequest, res: Response) => {
+  const currentUser = req.currentUser;
+
+  if (!currentUser) {
+    return res.status(200).send(createError(EGetUser.UNAUTHORIZED));
+  }
+
   const itemData = getItemFromBody({ ...req.body, taken: false }, req.params);
-  const ifWorkspaceExists = await checkIfWorkspaceExists(itemData.workspace);
+  const ifWorkspaceExists = await checkIfUserHasRightsToWorkspace(
+    itemData.workspace,
+    currentUser.user_id
+  );
 
   if (!ifWorkspaceExists) {
-    res.send(sendMessage("NO_WORKSPACE_FOUND"));
+    res.send(sendMessage(EGetUser.UNAUTHORIZED));
     return;
   }
 
@@ -72,12 +158,21 @@ export const createItem = async (req: Request, res: Response) => {
   }
 };
 
-export const updateItem = async (req: Request, res: Response) => {
+export const updateItem = async (req: IVerifyTokenRequest, res: Response) => {
+  const currentUser = req.currentUser;
+
+  if (!currentUser) {
+    return res.status(200).send(createError(EGetUser.UNAUTHORIZED));
+  }
+
   const item = getItemFromBody(req.body, req.params);
-  const ifListExists = await checkIfWorkspaceExists(item.workspace);
+  const ifListExists = await checkIfUserHasRightsToWorkspace(
+    item.workspace,
+    currentUser.user_id
+  );
 
   if (!ifListExists) {
-    res.send(sendMessage("NO_WORKSPACE_FOUND"));
+    res.send(sendMessage(EGetUser.UNAUTHORIZED));
     return;
   }
 
@@ -97,7 +192,7 @@ export const updateItem = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteItem = async (req: Request, res: Response) => {
+export const deleteItem = async (req: IVerifyTokenRequest, res: Response) => {
   try {
     const deletedItem = await Item.findByIdAndRemove({
       _id: req.params.itemId,
