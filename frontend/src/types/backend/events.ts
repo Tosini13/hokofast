@@ -13,9 +13,9 @@ export enum EEvents {
   deletedCategory = "DELETED_CATEGORY",
 }
 
-export type TEventBody<TData, TParams = void> = {
+export type TEventBody<TData, TParams = void | undefined> = {
   data: TData;
-  params?: TParams;
+  params: TParams;
 };
 
 export type TEventParams = {

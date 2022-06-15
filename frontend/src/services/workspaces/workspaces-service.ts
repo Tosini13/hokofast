@@ -30,18 +30,13 @@ export const useWorkspacesService = () => {
   }, [execute]);
 
   useEffect(() => {
-    socket.on(
-      EEvents.createdWorkspace,
-      (data: TEventBody<TWorkspace, TEventParams>) => {
-        console.log("createdWorkspace", data);
-        setWorkspaces((prev) => [...(prev ?? []), data.data]);
-      }
-    );
+    socket.on(EEvents.createdWorkspace, (data: TEventBody<TWorkspace>) => {
+      setWorkspaces((prev) => [...(prev ?? []), data.data]);
+    });
 
     socket.on(
       EEvents.updatedWorkspace,
       (data: TEventBody<TWorkspace, TEventParams>) => {
-        console.log("updatedWorkspace", data);
         setWorkspaces((prev) =>
           prev?.map((item) => (item.id === data.data.id ? data.data : item))
         );
@@ -51,7 +46,6 @@ export const useWorkspacesService = () => {
     socket.on(
       EEvents.deletedWorkspace,
       (data: TEventBody<TWorkspace, TEventParams>) => {
-        console.log("deletedWorkspace", data);
         setWorkspaces((prev) =>
           prev?.filter((item) => item.id !== data.data.id)
         );

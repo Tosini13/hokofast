@@ -54,7 +54,7 @@ export const useItemsService = ({
 
   useEffect(() => {
     socket.on(EEvents.createdItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (data.params?.workspaceId === workspaceId) {
+      if (data.params.workspaceId === workspaceId) {
         setItems((prev) => [...(prev ?? []), data.data]);
       }
     });
@@ -62,7 +62,7 @@ export const useItemsService = ({
 
   useEffect(() => {
     socket.on(EEvents.updatedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (workspaceId && data.params?.workspaceId === workspaceId) {
+      if (data.params.workspaceId === workspaceId) {
         setItems((prev) =>
           prev?.map((item) => (item.id === data.data.id ? data.data : item))
         );
@@ -72,11 +72,11 @@ export const useItemsService = ({
 
   useEffect(() => {
     socket.on(EEvents.deletedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (workspaceId && data.params?.workspaceId === workspaceId) {
+      if (data.params.workspaceId === workspaceId) {
         setItems((prev) => prev?.filter((item) => item.id !== data.data.id));
       }
     });
-  }, [socket, workspaceId, categoryId, items]);
+  }, []);
 
   return items;
 };
