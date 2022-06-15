@@ -16,7 +16,6 @@ const HomeHeaderForm: React.FC<THomeHeaderFormProps> = ({ setCategory }) => {
   const { category } = watchFormData;
 
   useEffect(() => {
-    console.log("category", category);
     setCategory(category?.id);
   }, [setCategory, category]);
 

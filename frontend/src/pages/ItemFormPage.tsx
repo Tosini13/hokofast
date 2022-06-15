@@ -1,6 +1,6 @@
 import { Stack, styled } from "@mui/material";
 import { useParams } from "react-router-dom";
-import ListFormHeader from "../components/header/ListFormHeader";
+import MainHeader from "../components/header/MainHeader";
 import ItemForm from "../components/items/form/ItemForm";
 import MainStack from "../components/layout/MainStack";
 import BottomNav from "../components/navigation/BottomNavigation";
@@ -30,7 +30,7 @@ const ItemFormPage: React.FC<TItemFormPageProps> = () => {
   }
   return (
     <MainStack>
-      <ListFormHeader />
+      <MainHeader />
       <StackContainer spacing={3}>
         <Stack>
           <ItemForm workspace={workspace} />
