@@ -1,18 +1,11 @@
-import {
-  IconButton,
-  Stack,
-  styled,
-  Avatar,
-  Dialog,
-  DialogActions,
-  Button,
-} from "@mui/material";
+import { IconButton, Stack, styled, Avatar } from "@mui/material";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import DefaultAvatar from "../../resources/svg/default_avatar.svg";
 import { useNavigate } from "react-router-dom";
 import { EPath } from "../../routing/paths";
 import { AuthStoreContext } from "../../stores/authStore";
 import Hamburger from "./Icons/Hamburger";
+import Dialog, { DialogButton } from "../layout/Dialog";
 
 const AvatarIconButton = styled(IconButton)`
   background-color: white;
@@ -39,6 +32,27 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
 
   const handleClose = useCallback(() => setIsOpen(false), []);
 
+  const dialogActions = useMemo(() => {
+    if (authStore.isLoggedIn) {
+      return [
+        <DialogButton color="success" onClick={handleClose}>
+          No
+        </DialogButton>,
+        <DialogButton color="error" onClick={logOut}>
+          Log Out
+        </DialogButton>,
+      ];
+    }
+    return [
+      <DialogButton onClick={() => navigate(EPath.signIn)}>
+        Sign In
+      </DialogButton>,
+      <DialogButton onClick={() => navigate(EPath.signUp)}>
+        Sign Up
+      </DialogButton>,
+    ];
+  }, [authStore.isLoggedIn, logOut, handleClose, navigate]);
+
   return (
     <Stack
       direction={"row"}
@@ -49,18 +63,11 @@ const HeaderMenu: React.FC<THeaderMenuProps> = () => {
       <AvatarIconButton size="large" onClick={() => setIsOpen(!isOpen)}>
         <Avatar alt="user's avatar" src={avatarUrl} />
       </AvatarIconButton>
-      <Dialog open={isOpen} onClose={handleClose}>
-        <DialogActions>
-          {authStore.isLoggedIn ? (
-            <Button onClick={logOut}>Log Out</Button>
-          ) : (
-            <>
-              <Button onClick={() => navigate(EPath.signIn)}>Sign In</Button>
-              <Button onClick={() => navigate(EPath.signUp)}>Sign Up</Button>
-            </>
-          )}
-        </DialogActions>
-      </Dialog>
+      <Dialog
+        open={isOpen}
+        dialogActions={dialogActions}
+        title={"Do you want to log out?"}
+      />
     </Stack>
   );
 };
