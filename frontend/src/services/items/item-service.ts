@@ -13,9 +13,6 @@ import { Id } from "../../types/utils";
 import socketIOClient from "socket.io-client";
 import { EEvents, TEventBody, TEventParams } from "../../types/backend/events";
 
-const getItems = (workspaceId: Id) => () =>
-  axios.get<TItem[]>(ITEMS_API_URL(workspaceId)).then((data) => data.data);
-
 type TGetAllItemsProps = {
   workspaceId?: Id;
   categoryId?: Id;
@@ -61,27 +58,21 @@ export const useItemsService = ({
         setItems((prev) => [...(prev ?? []), data.data]);
       }
     });
-  }, [socket, workspaceId]);
+  }, []);
 
   useEffect(() => {
     socket.on(EEvents.updatedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (
-        (workspaceId && data.params?.workspaceId === workspaceId) ||
-        items?.map((i) => i.id).includes(data.data.id)
-      ) {
+      if (workspaceId && data.params?.workspaceId === workspaceId) {
         setItems((prev) =>
           prev?.map((item) => (item.id === data.data.id ? data.data : item))
         );
       }
     });
-  }, [socket, workspaceId, categoryId, items]);
+  }, []);
 
   useEffect(() => {
     socket.on(EEvents.deletedItem, (data: TEventBody<TItem, TEventParams>) => {
-      if (
-        (workspaceId && data.params?.workspaceId === workspaceId) ||
-        items?.map((i) => i.id).includes(data.data.id)
-      ) {
+      if (workspaceId && data.params?.workspaceId === workspaceId) {
         setItems((prev) => prev?.filter((item) => item.id !== data.data.id));
       }
     });
