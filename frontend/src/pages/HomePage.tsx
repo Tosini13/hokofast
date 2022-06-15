@@ -51,8 +51,6 @@ export default HomePage;
 type THomePageMainProps = { categoryId?: Id | null };
 
 const HomePageMain: React.FC<THomePageMainProps> = ({ categoryId }) => {
-  console.log("categoryId", categoryId);
   const items = useItemsService({ categoryId: categoryId ?? undefined });
-  console.log("items", items);
   return <>{items ? <ItemsList items={items} /> : <Loading />}</>;
 };
