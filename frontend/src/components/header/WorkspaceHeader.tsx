@@ -2,7 +2,6 @@ import { Add } from "@mui/icons-material";
 import { IconButton, Skeleton, Stack, styled, Typography } from "@mui/material";
 import { useState } from "react";
 import { TWorkspace } from "../../types/workspaces";
-import AddItem from "../items/form/AddItem";
 import ItemForm from "../items/form/ItemForm";
 
 const IconButtonStyled = styled(IconButton)<{ isopen?: boolean }>`

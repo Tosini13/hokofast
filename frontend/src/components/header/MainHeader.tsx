@@ -3,7 +3,7 @@ import HeaderLayout from "./HeaderLayout";
 import HeaderMenu from "./HeaderMenu";
 
 type TMainHeaderProps = {
-  content: React.ReactNode;
+  content?: React.ReactNode;
 };
 
 const MainHeader: React.FC<TMainHeaderProps> = ({ content }) => {
