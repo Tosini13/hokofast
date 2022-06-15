@@ -1,5 +1,5 @@
 import { Stack, styled } from "@mui/material";
-import ListFormHeader from "../components/header/ListFormHeader";
+import MainHeader from "../components/header/MainHeader";
 import MainStack from "../components/layout/MainStack";
 import BottomNav from "../components/navigation/BottomNavigation";
 import WorkspaceForm from "../components/workspaces/form/WorkspaceForm";
@@ -17,7 +17,7 @@ type TWorkspaceFormPageProps = {};
 const WorkspaceFormPage: React.FC<TWorkspaceFormPageProps> = () => {
   return (
     <MainStack>
-      <ListFormHeader />
+      <MainHeader />
       <StackContainer spacing={3}>
         <Stack>
           <WorkspaceForm />

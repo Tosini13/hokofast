@@ -1,11 +1,27 @@
 import {
   Box,
+  Paper,
   PaperProps,
   styled,
   Typography,
   TypographyProps,
 } from "@mui/material";
-import { PaperStyled } from "../../components/lists/Lists";
+
+const PaperStyled = styled(Paper)`
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  padding: 4px 10px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  &:focus {
+    box-shadow: none;
+  }
+  @media screen and (min-width: 769px) {
+    &:hover {
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
+    }
+  }
+`;
 
 export const ItemTypographyBox = styled(Box)`
   border-radius: 5px;
