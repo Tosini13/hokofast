@@ -2,7 +2,6 @@ import { Button, Stack, styled, Typography } from "@mui/material";
 import TextField from "../../controlled/TextField";
 import { LoadingIcon } from "../../utils/Loading";
 import Autocomplete from "../../controlled/Autocomplete";
-import { useWorkspacesService } from "../../../services/workspaces/workspaces-service";
 import { useCategoriesService } from "../../../services/categories/categories-service";
 import { TItemForm, useItemForm } from "./useItemForm";
 import { TWorkspace } from "../../../types/workspaces";
@@ -36,9 +35,6 @@ const ItemForm: React.FC<TItemFormProps> = ({ workspace }) => {
     workspace,
   });
 
-  const { isProcessing: isProcessingSearch, workspaces } =
-    useWorkspacesService();
-
   const { isProcessing: isProcessingCategories, categories } =
     useCategoriesService();
 
@@ -52,32 +48,6 @@ const ItemForm: React.FC<TItemFormProps> = ({ workspace }) => {
             placeholder={"Item name"}
             control={control}
             style={inputStyle}
-          />
-
-          <Autocomplete<TItemForm, TItemForm["workspace"], boolean>
-            name="workspace"
-            control={control}
-            size="small"
-            loading={isProcessingSearch}
-            options={workspaces}
-            getOptionLabel={(option) => option?.name ?? ""}
-            isOptionEqualToValue={(option, value) => option?.id === value?.id}
-            renderOption={(props, option) => {
-              if (!option) {
-                return null;
-              }
-              return (
-                <li {...props} key={option.id}>
-                  <Typography>{option.name}</Typography>
-                </li>
-              );
-            }}
-            textFieldProps={{
-              name: "searchWorkspace",
-              placeholder: "Workspace",
-              control: control,
-              style: inputStyle,
-            }}
           />
 
           <Autocomplete<TItemForm, TItemForm["category"], boolean>

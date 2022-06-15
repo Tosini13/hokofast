@@ -11,8 +11,6 @@ type TMockCategory = {
 
 export type TItemForm = {
   name: string;
-  workspace: TWorkspace;
-  searchWorkspace: string;
   category: TMockCategory | null;
   searchCategory: string;
 };
@@ -27,8 +25,6 @@ export const useItemForm = ({ workspace }: TUseItemForm) => {
   const { handleSubmit, control, reset } = useForm<TItemForm>({
     defaultValues: {
       name: "",
-      workspace,
-      searchWorkspace: "",
       category: null,
       searchCategory: "",
     },
@@ -37,7 +33,7 @@ export const useItemForm = ({ workspace }: TUseItemForm) => {
   const onSubmit = async (data: TItemForm) => {
     try {
       const res = await execute(
-        createItem(data.workspace.id, {
+        createItem(workspace.id, {
           name: data.name,
           category: data.category?.id,
         })
