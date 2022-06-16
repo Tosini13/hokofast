@@ -1,7 +1,7 @@
 import { Remove, ShoppingCart } from "@mui/icons-material";
 import { IconButton, Stack, styled } from "@mui/material";
 import React, { useCallback } from "react";
-import { deleteItem, editItem } from "../../services/items/item-service";
+import { deleteItem, editItem } from "../../services/items/actions";
 import ItemContainer, {
   ItemTypography,
   ItemTypographyBox,

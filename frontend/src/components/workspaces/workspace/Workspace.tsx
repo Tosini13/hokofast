@@ -1,4 +1,5 @@
-import { useItemsService } from "../../../services/items/item-service";
+import { Typography } from "@mui/material";
+import { useItemsService } from "../../../services/items/items-service";
 import { TWorkspace } from "../../../types/workspaces";
 import ItemsList from "../../items/ItemsList";
 import Loading from "../../utils/Loading";
@@ -8,8 +9,18 @@ type TWorkspaceProps = {
 };
 
 const Workspace: React.FC<TWorkspaceProps> = ({ workspace }) => {
-  const items = useItemsService({ workspaceId: workspace.id });
-  return <>{items ? <ItemsList items={items} /> : <Loading />}</>;
+  const { items, isProcessing } = useItemsService(workspace.id);
+  return (
+    <>
+      {isProcessing ? (
+        <Loading />
+      ) : items ? (
+        <ItemsList items={items} />
+      ) : (
+        <Typography>No Items</Typography>
+      )}
+    </>
+  );
 };
 
 export default Workspace;

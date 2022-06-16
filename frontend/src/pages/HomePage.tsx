@@ -1,4 +1,4 @@
-import { Stack, styled } from "@mui/material";
+import { Stack, styled, Typography } from "@mui/material";
 import { observer } from "mobx-react";
 import { useContext, useMemo, useState } from "react";
 import HomeHeader from "../components/header/HomeHeader";
@@ -7,8 +7,9 @@ import ItemsList from "../components/items/ItemsList";
 import MainStack from "../components/layout/MainStack";
 import BottomNav from "../components/navigation/BottomNavigation";
 import Loading from "../components/utils/Loading";
-import { useItemsService } from "../services/items/item-service";
+import { useAllItemsService } from "../services/items/items-service";
 import { useUsersService } from "../services/users/users.service";
+import { useWorkspacesService } from "../services/workspaces/workspaces-service";
 import { AuthStoreContext } from "../stores/authStore";
 import { Id } from "../types/utils";
 
@@ -24,6 +25,7 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
   const authStore = useContext(AuthStoreContext);
   const { users } = useUsersService({});
   const [category, setCategory] = useState<Id | null | undefined>();
+  const { workspaces } = useWorkspacesService();
 
   const headerContent = useMemo(
     () => (
@@ -39,7 +41,10 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
     <MainStack>
       <MainHeader content={headerContent} />
       <StackContainer spacing={3}>
-        <HomePageMain categoryId={category} />
+        <HomePageMain
+          workspacesId={workspaces.map((workspace) => workspace.id)}
+          categoryId={category}
+        />
       </StackContainer>
       <BottomNav />
     </MainStack>
@@ -48,9 +53,25 @@ const HomePage: React.FC<THomePageProps> = observer(() => {
 
 export default HomePage;
 
-type THomePageMainProps = { categoryId?: Id | null };
+type THomePageMainProps = { workspacesId: Id[]; categoryId?: Id | null };
 
-const HomePageMain: React.FC<THomePageMainProps> = ({ categoryId }) => {
-  const items = useItemsService({ categoryId: categoryId ?? undefined });
-  return <>{items ? <ItemsList items={items} /> : <Loading />}</>;
+const HomePageMain: React.FC<THomePageMainProps> = ({
+  workspacesId,
+  categoryId,
+}) => {
+  const { items, isProcessing } = useAllItemsService(
+    workspacesId,
+    categoryId ?? undefined
+  );
+  return (
+    <>
+      {isProcessing ? (
+        <Loading />
+      ) : items ? (
+        <ItemsList items={items} />
+      ) : (
+        <Typography>No Items</Typography>
+      )}
+    </>
+  );
 };

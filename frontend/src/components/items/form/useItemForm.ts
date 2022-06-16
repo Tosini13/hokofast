@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { createItem } from "../../../services/items/item-service";
+import { createItem } from "../../../services/items/actions";
 import { Id } from "../../../types/utils";
 import { TWorkspace } from "../../../types/workspaces";
 import useAsync from "../../../utils/useAsync";
